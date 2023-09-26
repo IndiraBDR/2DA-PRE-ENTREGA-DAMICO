@@ -101,15 +101,31 @@ class CartManager {
     }
   }
 
-  async addProductInCart(cartId, productId) {
+  async addProductInCart(cId, pId) {
+   
+    const cartById = await this.getCartById(cId);
+
+    const productIndex = cartById.products.findIndex(item => item.productId === pId);
+
+    if(productIndex !== -1){
+
+
+      let a = cartById.products[productIndex].quantity++;
+      await fs.promises.writeFile(this.path, JSON.stringify(a));
+    }else{
+
+      let b = cartById.products.push({productId:pId, quantity:1});
+      await fs.promises.writeFile(this.path, JSON.stringify(b));
+    }
+
+  
+  /*
+    const productById = await productManager.getProductById(pId);
+
+    const cartFilter = await this.deleteCartById(cId);
+
     const cart = await this.getCart();
-
-    const cartById = await this.getCartById(cartId);
-
-    const productById = await productManager.getProductById(productId);
-
-    const cartFilter = await this.deleteCartById(cartId);
-
+    
     if (cartById.products.some((prod) => prod.id === productId)) {
       let sumarProductInCart = cartById.products.find(
         (prod) => prod.id === productId
@@ -135,7 +151,10 @@ class CartManager {
     await fs.promises.writeFile(this.path, JSON.stringify(newCarts));
 
     return "Producto agregado";
+
+    */
   }
+  
 
   /*
   async getProductById(id) {
