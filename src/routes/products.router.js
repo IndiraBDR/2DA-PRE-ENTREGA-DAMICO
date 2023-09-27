@@ -1,14 +1,10 @@
 import { Router } from "express";
-import { ProductManager } from "../productManager.js"
-
+import { ProductManager } from "../productManager.js";
 
 const routerProduct = Router();
-
-
-const productManager = new ProductManager(); //instancia de la class
+const productManager = new ProductManager();
 
 routerProduct.get("/", async (req, res) => {
-  //let limit =  Number(req.query.limit)  ;
   const { limit } = req.query;
 
   try {
@@ -26,11 +22,11 @@ routerProduct.get("/", async (req, res) => {
   }
 });
 
-routerProduct.get("/:id", async (req, res) => {
-  const { id } = req.params;
+routerProduct.get("/:pid", async (req, res) => {
+  const { pid } = req.params;
 
   try {
-    let productoFiltrado = await productManager.getProductById(+id);
+    let productoFiltrado = await productManager.getProductById(+pid);
 
     if (!productoFiltrado) {
       res.status(404).json({ message: "product not found" });
@@ -43,25 +39,25 @@ routerProduct.get("/:id", async (req, res) => {
 });
 
 routerProduct.post("/", async (req, res) => {
-  const { title, descrptiption, price, code, stock } = req.body;
+  const { title, description, price, code, stock, category } = req.body;
 
-  if (!title || !descrptiption || !price || !code || !stock) {
+  if (!title || !description || !price || !code || !stock || !category) {
     return res.status(400).json({ message: "Some data is missing" });
   }
 
   try {
     let response = await productManager.addProduct(req.body);
-    res.json({ message: "usuario creado", response });
+    res.json({ message: "product created", response });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-routerProduct.delete("/:id", async (req, res) => {
-  const { id } = req.params;
+routerProduct.delete("/:pid", async (req, res) => {
+  const { pid } = req.params;
 
   try {
-    let response = await productManager.deleteProductById(+id);
+    let response = await productManager.deleteProductById(+pid);
 
     if (!response) {
       return res.status(404).json({ message: "product not found" });
@@ -73,11 +69,11 @@ routerProduct.delete("/:id", async (req, res) => {
   }
 });
 
-routerProduct.put("/:id", async (req, res) => {
-  const { id } = req.params;
+routerProduct.put("/:pid", async (req, res) => {
+  const { pid } = req.params;
 
   try {
-    const response = await productManager.updateProduct(+id, req.body);
+    const response = await productManager.updateProduct(+pid, req.body);
 
     if (!response) {
       return res.status(404).json({ message: "product not found" });
@@ -89,4 +85,4 @@ routerProduct.put("/:id", async (req, res) => {
   }
 });
 
-export{routerProduct};
+export { routerProduct };
