@@ -1,4 +1,7 @@
 import fs from "fs";
+import { ProductManager } from "../src/productManager.js";
+
+const productManager = new ProductManager();
 
 class CartManager {
   constructor() {
@@ -69,6 +72,15 @@ class CartManager {
 
   async addProductInCart(cId, pId) {
     const cartById = await this.getCartById(cId);
+    const productById = await productManager.getProductById(pId);
+
+    if (!cartById) {
+      return "Cart not found";
+    }
+
+    if (!productById) {
+      return "Product not found";
+    }
 
     const productIndex = cartById.products.findIndex(
       (item) => item.productId === pId

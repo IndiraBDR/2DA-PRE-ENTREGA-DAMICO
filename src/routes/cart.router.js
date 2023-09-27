@@ -2,7 +2,6 @@ import { Router } from "express";
 import { CartManager } from "../cartManager.js";
 
 const routerCart = Router();
-
 const cartManager = new CartManager();
 
 routerCart.get("/", async (req, res) => {
@@ -61,13 +60,10 @@ routerCart.post("/:cid/product/:pid", async (req, res) => {
 
   try {
     let response = await cartManager.addProductInCart(+cid, +pid);
-    res.json({ response });
-    
+    res.json({ response, message: "Added product" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
-
-
 
 export { routerCart };
