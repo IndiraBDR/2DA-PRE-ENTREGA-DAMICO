@@ -1,0 +1,59 @@
+
+
+
+
+
+<form id="Form agragar producto">
+
+Title:
+<input type="string" name="title" id="title">
+
+Description:
+<input type="string" name="description" id="description">
+
+Status:
+<input type="boolean" name="status" id="status">
+
+Price:
+<input type="number" name="price" id="price">
+
+Code: 
+ <input type="string" name="code" id="code">
+
+ Stock:
+ <input type="number" name="stock" id="stock">
+
+Category:  
+ <input type="string" name="category" id="category">
+
+
+
+ <input type="submit" value="ENVIAR">
+
+</form>
+
+
+<h2 id="titleTex"></h2>
+<p id="descriptionTex"></p>
+<p id="statusTex"></p>
+<p id="priceTex"></p>
+<p id="codeTex"></p>
+<p id="stockTex"></p>
+<p id="categoryTex"></p>
+
+
+{{#each products}}
+
+<h2>{{this.title}}</h2>
+<p>{{this.description}}</p>
+<p> {{this.price}}</p>
+
+{{/each}}
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
+
+
+
+
