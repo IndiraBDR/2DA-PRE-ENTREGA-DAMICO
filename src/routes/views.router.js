@@ -12,7 +12,6 @@ routerViews.get("/", async (req,res)=>{
 
     res.render("home",{
 
-
         products:products
     })
     

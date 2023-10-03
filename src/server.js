@@ -7,6 +7,10 @@ import { __dirname } from "./utils.js";
 import { routerViews } from "./routes/views.router.js";
 import { Server } from "socket.io";
 
+import { ProductManager } from "../src/productManager.js";
+
+const productManager = new ProductManager();
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,7 +34,21 @@ const socketServer = new Server(httpServer);
 
 socketServer.on("connection", (socket) => {
 
+  
 
+  socket.on('addProduct', async(product)=>{
+
+    const producto= await productManager.addProduct(product);
+
+    const productosActualizados = await productManager.getProduct();
+
+    socket.emit('productUpdate', productosActualizados)
+
+     console.log(product);
+
+  })
+
+/*
   socket.on("newTitle", (value) => {
     
     socket.emit("titleUpdated", value);
@@ -45,5 +63,7 @@ socketServer.on("connection", (socket) => {
     
   });
 
-  console.log("cliente conectado");
+    console.log("cliente conectado");
+*/
+
 });
