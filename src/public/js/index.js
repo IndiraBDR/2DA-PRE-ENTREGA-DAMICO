@@ -9,7 +9,7 @@ const inputPrice = document.getElementById("price");
 const inputCode = document.getElementById("code");
 const inputStock = document.getElementById("stock");
 const inputCategory = document.getElementById("category");
-const inputThumbnails=document.getElementById("thumbnails");
+const inputThumbnails = document.getElementById("thumbnails");
 const formDelete = document.getElementById("Form delete product");
 const inputIdDelete = document.getElementById("idDelete");
 const inputTitleDelete = document.getElementById("titleDelete");
@@ -17,12 +17,12 @@ const inputTitleDelete = document.getElementById("titleDelete");
 
 
 const listaDeProductosActualizados = (products) => {
-    let divRealTimeProduct = document.getElementById("divRealTimeProduct");
-  
-    let html = "";
-  
-    products.forEach((product) => {
-      html += `
+  let divRealTimeProduct = document.getElementById("divRealTimeProduct");
+
+  let html = "";
+
+  products.forEach((product) => {
+    html += `
              
               <h3>titulo: ${product.title}</h3>
               <p>descripcion: ${product.description}</p>
@@ -35,9 +35,9 @@ const listaDeProductosActualizados = (products) => {
               <br></br>
       
           `;
-      divRealTimeProduct.innerHTML = html;
-    });
-  };
+    divRealTimeProduct.innerHTML = html;
+  });
+};
 
 
 socketClient.on("productsInitial", (products) => {
@@ -54,7 +54,7 @@ form.onsubmit = (e) => {
   const code = inputCode.value;
   const stock = inputStock.value;
   const category = inputCategory.value;
-  const thumbnails= inputThumbnails.value;
+  const thumbnails = inputThumbnails.value;
 
   socketClient.emit("addProduct", {
     title,
@@ -67,7 +67,7 @@ form.onsubmit = (e) => {
     thumbnails,
   });
 
-  
+
 };
 
 socketClient.on("productUpdate", (products) => {
@@ -83,7 +83,7 @@ formDelete.onsubmit = (e) => {
   const idDelete = inputIdDelete.value;
 
   socketClient.emit("deleteProduct", idDelete);
-  
+
 };
 
 socketClient.on("productDelete", (products) => {

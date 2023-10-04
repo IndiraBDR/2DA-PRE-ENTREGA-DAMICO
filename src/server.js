@@ -31,6 +31,9 @@ const httpServer = app.listen(8080, () => {
 const socketServer = new Server(httpServer);
 
 socketServer.on("connection", async (socket) => {
+
+  console.log("CLIENTE CONECTADO");
+
   const productosOld = await productManager.getProduct();
 
   socket.emit("productsInitial", productosOld);
@@ -54,8 +57,10 @@ socketServer.on("connection", async (socket) => {
 
     socket.emit("productDelete", productosActualizados);
 
-    
+
   });
+
+
 
 
 });
