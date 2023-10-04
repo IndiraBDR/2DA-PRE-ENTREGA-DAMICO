@@ -18,11 +18,11 @@ routerViews.get("/", async (req,res)=>{
 });
 
 routerViews.get("/realtimeproducts", async (req,res)=>{
-    let products = await productManager.getProduct();
+    //let products = await productManager.getProduct();
 
     res.render("realTimeProducts",{
 
-        products:products
+       // products:products
 
 
     })

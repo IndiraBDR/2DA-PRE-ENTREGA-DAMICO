@@ -1,56 +1,48 @@
+<form id="Form agregar producto">
 
+  Title:
+  <input type="string" name="title" id="title" />
 
+  Description:
+  <input type="string" name="description" id="description" />
 
+  Status:
+  <input type="boolean" name="status" id="status" />
 
+  Price:
+  <input type="number" name="price" id="price" />
 
-<form id="Form agragar producto">
+  Code:
+  <input type="string" name="code" id="code" />
 
-Title:
-<input type="string" name="title" id="title">
+  Stock:
+  <input type="number" name="stock" id="stock" />
 
-Description:
-<input type="string" name="description" id="description">
+  Category:
+  <input type="string" name="category" id="category" />
 
-Status:
-<input type="boolean" name="status" id="status">
+  Id:
+  <input type="string" name="Id" id="Id" />
 
-Price:
-<input type="number" name="price" id="price">
-
-Code: 
- <input type="string" name="code" id="code">
-
- Stock:
- <input type="number" name="stock" id="stock">
-
-Category:  
- <input type="string" name="category" id="category">
-
-
-
- <input type="submit" value="ENVIAR">
+  <input type="submit" value="ENVIAR" />
 
 </form>
 
+<form id="Form delete product">
 
-<h2 id="titleTex"></h2>
-<p id="descriptionTex"></p>
-<p id="statusTex"></p>
-<p id="priceTex"></p>
-<p id="codeTex"></p>
-<p id="stockTex"></p>
-<p id="categoryTex"></p>
+  Title:
+  <input type="string" name="title" id="titleDelete" />
 
+  Id:
+  <input type="string" name="Id" id="idDelete" />
+
+  <input type="submit" value="ENVIAR PRODUCTO A ELIMINAR" />
+
+</form>
 
 <div id="divRealTimeProduct">
 
-
 </div>
-
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>
-
-
-
-

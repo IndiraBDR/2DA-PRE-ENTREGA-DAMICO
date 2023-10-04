@@ -32,38 +32,32 @@ const httpServer = app.listen(8080, () => {
 
 const socketServer = new Server(httpServer);
 
-socketServer.on("connection", (socket) => {
+socketServer.on("connection", async (socket) => {
+  const productosOld = await productManager.getProduct();
 
-  
+  socket.emit("productsInitial", productosOld);
 
-  socket.on('addProduct', async(product)=>{
-
-    const producto= await productManager.addProduct(product);
+  socket.on("addProduct", async (product) => {
+    const producto = await productManager.addProduct(product);
 
     const productosActualizados = await productManager.getProduct();
 
-    socket.emit('productUpdate', productosActualizados)
+    socket.emit("productUpdate", productosActualizados);
 
-     console.log(product);
-
-  })
-
-/*
-  socket.on("newTitle", (value) => {
-    
-    socket.emit("titleUpdated", value);
-
-    
+    console.log(product);
   });
 
-  socket.on("newDescrption", (value) => {
-    
-    socket.emit("descriptionUpdated", value);
+  socket.on("deleteProduct", async (productId) => {
+    const productosOld = await productManager.getProduct();
 
-    
+    const producto = await productManager.deleteProductById(+productId);
+
+    const productosActualizados = await productManager.getProduct();
+
+    socket.emit("productDelete", productosActualizados);
+
+    console.log(producto);
   });
 
-    console.log("cliente conectado");
-*/
 
 });
