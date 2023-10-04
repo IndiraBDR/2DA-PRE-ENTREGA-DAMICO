@@ -1,12 +1,10 @@
 import express from "express";
 import { routerProduct } from "./routes/products.router.js";
 import { routerCart } from "./routes/cart.router.js";
-//import { handlebars } from "express-handlebars";
 import { engine } from "express-handlebars";
 import { __dirname } from "./utils.js";
 import { routerViews } from "./routes/views.router.js";
 import { Server } from "socket.io";
-
 import { ProductManager } from "../src/productManager.js";
 
 const productManager = new ProductManager();
@@ -56,7 +54,7 @@ socketServer.on("connection", async (socket) => {
 
     socket.emit("productDelete", productosActualizados);
 
-    console.log(producto);
+    
   });
 
 
