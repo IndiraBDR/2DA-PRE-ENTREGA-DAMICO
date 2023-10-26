@@ -34,22 +34,24 @@ class CartManagerDB {
 
         const cart = await cartsModel.findById(idCart);
 
+        console.log(cart);
+
 
         const productIndex = cart.products.findIndex(
-            (item) => item.product === idProduct
+            (item) => item.product.equals(idProduct)
         );
 
 
         if (productIndex !== -1) {
             cart.products[productIndex].quantity++;
         } else {
-            cart.products.push({ idProduct: pId, quantity: 1 });
+            cart.products.push({ product: idProduct, quantity: 1 });
         }
-
+       
+        console.log(cart);
         return cart.save()
 
     };
-
 
 }
 

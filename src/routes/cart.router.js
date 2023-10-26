@@ -105,7 +105,7 @@ routerCart.get("/:idCart", async (req, res) => {
   }
 });
 
-
+//6539ab674069fecac93cdda5/products/6539b0275e3d00bf535dd2cf
 
 routerCart.post("/", async (req, res) => { 
 
@@ -123,15 +123,18 @@ routerCart.post("/", async (req, res) => {
 
 routerCart.post("/:idCart/products/:idProduct", async (req, res) => { 
 
-  const {idCar, idProduct} = req.params;
+  const {idCart, idProduct} = req.params;
+ 
 
   try {
-   const productAdded= await cartManagerBD.addProductToCart(idCar, idProduct);
+   const productAdded= await cartManagerBD.addProductToCart(idCart, idProduct);
   
    res.status(200).json({ message: "PRODUCTO AGREGADO", product:productAdded });
 
 
   } catch (error) {
+
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 });

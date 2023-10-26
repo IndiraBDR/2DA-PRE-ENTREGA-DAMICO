@@ -15,7 +15,6 @@ const messageSchema = new Schema({
         required: true
     },
 
-   
 
 });
 
