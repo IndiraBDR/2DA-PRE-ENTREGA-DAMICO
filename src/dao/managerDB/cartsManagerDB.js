@@ -1,6 +1,4 @@
-
 import { cartsModel } from "../models/carts.model.js";
-
 
 class CartManagerDB {
 
@@ -20,7 +18,6 @@ class CartManagerDB {
 
     };
 
-
     async createOneCart() {
 
         const newCart = { products: [] };
@@ -34,21 +31,16 @@ class CartManagerDB {
 
         const cart = await cartsModel.findById(idCart);
 
-        console.log(cart);
-
-
         const productIndex = cart.products.findIndex(
             (item) => item.product.equals(idProduct)
         );
-
 
         if (productIndex !== -1) {
             cart.products[productIndex].quantity++;
         } else {
             cart.products.push({ product: idProduct, quantity: 1 });
         }
-       
-        console.log(cart);
+
         return cart.save()
 
     };

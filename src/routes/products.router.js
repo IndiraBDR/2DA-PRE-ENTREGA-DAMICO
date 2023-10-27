@@ -4,8 +4,7 @@ import { ProductManagerDB } from "../dao/managerDB/productManagerDB.js";
 
 const routerProduct = Router();
 const productManager = new ProductManager();
-
-const productManagerDB =  new ProductManagerDB();
+const productManagerDB = new ProductManagerDB();
 
 
 /* FILE SYSTEM
@@ -98,11 +97,10 @@ routerProduct.put("/:pid", async (req, res) => {
 routerProduct.get("/", async (req, res) => {
 
   try {
-   const products= await productManagerDB.findAll()
+    const products = await productManagerDB.findAll()
 
-   console.log(products);
 
-   res.status(200).json({ message: "product total", products });
+    res.status(200).json({ message: "product total", products });
 
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -129,18 +127,17 @@ routerProduct.get("/:pid", async (req, res) => {
 routerProduct.post("/", async (req, res) => {
 
   try {
-   const createProduct= await productManagerDB.createOne(req.body);
-  
+    const createProduct = await productManagerDB.createOne(req.body);
 
-   res.status(200).json({ message: "product creado", product:createProduct });
 
-  
+    res.status(200).json({ message: "product creado", product: createProduct });
+
+
 
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
-
 
 
 routerProduct.put("/:pid", async (req, res) => {
@@ -163,7 +160,7 @@ routerProduct.delete("/:pid", async (req, res) => {
   const { pid } = req.params;
 
   try {
-    let response = await  productManagerDB.deleteOne(pid);
+    let response = await productManagerDB.deleteOne(pid);
 
     if (!response) {
       return res.status(404).json({ message: "product not found" });

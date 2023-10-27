@@ -1,9 +1,7 @@
 import { Router } from "express";
-
 import { ProductManager } from "../dao/managerFileS/productManager.js";
 
 const productManager = new ProductManager();
-
 const routerViews = Router();
 
 routerViews.get("/", async (req, res) => {

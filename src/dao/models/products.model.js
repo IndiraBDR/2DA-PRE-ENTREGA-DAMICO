@@ -39,13 +39,11 @@ const productsSchema = new Schema({
     thumbnails: {
 
         type: String,
-      
-    }
 
+    }
 
 });
 
 
 const productsModel = model("Products", productsSchema);
-
-export{productsModel};
+export { productsModel };

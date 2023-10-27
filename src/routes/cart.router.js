@@ -1,12 +1,9 @@
 import { Router } from "express";
 import { CartManager } from "../dao/managerFileS/cartManager.js";
-
 import { CartManagerDB } from "../dao/managerDB/cartsManagerDB.js";
-
 const routerCart = Router();
 const cartManager = new CartManager();
-
-const cartManagerBD= new CartManagerDB();
+const cartManagerBD = new CartManagerDB();
 
 /* FILE SYSTEM
 
@@ -80,11 +77,11 @@ routerCart.post("/:cid/product/:pid", async (req, res) => {
 routerCart.get("/", async (req, res) => {
 
   try {
-   const carts= await cartManagerBD.findAllCart()
+    const carts = await cartManagerBD.findAllCart()
 
 
 
-   res.status(200).json({ message: "carts total", carts });
+    res.status(200).json({ message: "carts total", carts });
 
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -93,27 +90,26 @@ routerCart.get("/", async (req, res) => {
 
 routerCart.get("/:idCart", async (req, res) => {
 
- const {idCart} = req.params;
+  const { idCart } = req.params;
 
   try {
-   const cart= await cartManagerBD.findCartById(idCart);
+    const cart = await cartManagerBD.findCartById(idCart);
 
-   res.status(200).json({ message: "cart by id", cart });
+    res.status(200).json({ message: "cart by id", cart });
 
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-//6539ab674069fecac93cdda5/products/6539b0275e3d00bf535dd2cf
 
-routerCart.post("/", async (req, res) => { 
+routerCart.post("/", async (req, res) => {
 
   try {
-   const createCart= await cartManagerBD.createOneCart();
-  
+    const createCart = await cartManagerBD.createOneCart();
 
-   res.status(200).json({ message: "carrito creado", cart:createCart });
+
+    res.status(200).json({ message: "carrito creado", cart: createCart });
 
 
   } catch (error) {
@@ -121,15 +117,14 @@ routerCart.post("/", async (req, res) => {
   }
 });
 
-routerCart.post("/:idCart/products/:idProduct", async (req, res) => { 
+routerCart.post("/:idCart/products/:idProduct", async (req, res) => {
 
-  const {idCart, idProduct} = req.params;
- 
+  const { idCart, idProduct } = req.params;
 
   try {
-   const productAdded= await cartManagerBD.addProductToCart(idCart, idProduct);
-  
-   res.status(200).json({ message: "PRODUCTO AGREGADO", product:productAdded });
+    const productAdded = await cartManagerBD.addProductToCart(idCart, idProduct);
+
+    res.status(200).json({ message: "PRODUCTO AGREGADO", product: productAdded });
 
 
   } catch (error) {
@@ -140,3 +135,5 @@ routerCart.post("/:idCart/products/:idProduct", async (req, res) => {
 });
 
 export { routerCart };
+
+//653b11f7f4fb2fc0b83af757/products/6539b0275e3d00bf535dd2cf

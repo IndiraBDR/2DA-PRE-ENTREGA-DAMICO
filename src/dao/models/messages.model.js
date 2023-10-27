@@ -6,13 +6,13 @@ const messageSchema = new Schema({
     user: {
         type: String,
         required: true
-      
     },
 
 
-     message: {
+    message: {
         type: String,
         required: true
+
     },
 
 
@@ -20,5 +20,4 @@ const messageSchema = new Schema({
 
 
 const messageModel = model("Messages", messageSchema);
-
-export{messageModel};
+export { messageModel };

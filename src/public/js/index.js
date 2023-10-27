@@ -1,6 +1,4 @@
-
 const socketClient = io();
-
 const form = document.getElementById("Form agregar producto");
 const inputTitle = document.getElementById("title");
 const inputDescription = document.getElementById("description");
@@ -66,7 +64,6 @@ form.onsubmit = (e) => {
     category,
     thumbnails,
   });
-
 
 };
 

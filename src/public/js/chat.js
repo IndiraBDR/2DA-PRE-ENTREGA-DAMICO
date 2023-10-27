@@ -5,7 +5,6 @@ const inputMessage = document.getElementById("message");
 const inputEmail = document.getElementById("emailUser");
 const chatContainer = document.getElementById("chatContainer");
 
-
 let nameUser;
 
 Swal.fire({
@@ -46,7 +45,7 @@ socketClient.on("userConnected", (nUser) => {
         }
     }).showToast();
 
-    // console.log(`${user} conectado`);
+
 })
 
 
@@ -71,8 +70,6 @@ socketClient.on("chatTotal", (messageT) => {
     chatContainer.innerHTML = chatT;
 
 
-
 })
 
 
-//nombre.innerText="INDIRA";

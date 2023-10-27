@@ -10,8 +10,8 @@ mongoose.connect(URI)
 
 */
 
-const URI='mongodb+srv://indiradamico22:elamoresdedos@cluster0.n1eqmw8.mongodb.net/ecommerce?retryWrites=true&w=majority';
+const URI = 'mongodb+srv://indiradamico22:elamoresdedos@cluster0.n1eqmw8.mongodb.net/ecommerce?retryWrites=true&w=majority';
 
 mongoose.connect(URI)
-.then(()=>console.log("conectado a ecommerce"))
-.catch((error)=> console.log(error));
+    .then(() => console.log("conectado a ecommerce"))
+    .catch((error) => console.log(error));
