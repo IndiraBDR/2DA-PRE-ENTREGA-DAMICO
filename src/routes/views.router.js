@@ -25,7 +25,7 @@ routerViews.get("/chat", async (req, res) => {
   res.render("chat");
 });
 
-
+/*
 routerViews.get("/products", async (req, res) => {
 
   if (!req.session.user) {
@@ -43,6 +43,31 @@ routerViews.get("/products", async (req, res) => {
   res.render("products", {
     productsData: productsObject,
     user: req.session.user
+  });
+
+
+});
+*/
+routerViews.get("/products", async (req, res) => {
+
+  if (!req.session.passport) {
+
+    return res.redirect("/api/views/login")
+    
+  }
+
+  let products = await productManagerDB.findAll(req.query)
+
+  let productsDB = products.payload
+
+  const productsObject = productsDB.map(p => p.toObject());
+
+  const {name} = req.user
+  
+
+  res.render("products", {
+    productsData: productsObject,
+    user: {name}
   });
 
 
@@ -98,5 +123,17 @@ routerViews.get("/profile", async (req, res) => {
   res.render("profile")
 
 });
+
+routerViews.get("/restaurarPassword",async (req,res)=>{
+
+  res.render("restaurarPassword")
+
+
+});
+
+routerViews.get('/error',async (req,res)=>{
+
+  res.render("error")
+})
 
 export { routerViews };

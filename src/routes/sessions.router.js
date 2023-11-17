@@ -1,8 +1,12 @@
 import { Router } from "express";
 import { UsersManagerDB } from "../dao/managerDB/usersManagerDB.js"
+import { hashData, compareData } from "../utils.js";
+import passport from "passport";
+
 const routerSessions = Router();
 const usersManagerDB = new UsersManagerDB();
 
+/* LOGIN Y SIGNUP MANUAL
 
 routerSessions.post("/signup", async (req, res) => {
 
@@ -16,8 +20,10 @@ routerSessions.post("/signup", async (req, res) => {
 
   try {
 
-    const createUser = await usersManagerDB.createOne(req.body);
-    res.status(200).json({ message: "User creado", user: createUser });
+   const hashedPassword = await hashData(password);
+
+    const createUser = await usersManagerDB.createOne({...req.body, password:hashedPassword});
+    res.status(200).json({ message: "User creado", user: createUser })
 
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -41,9 +47,11 @@ routerSessions.post("/login", async (req, res) => {
       return res.redirect("/api/views/signup")
     }
 
-    const passwordVald = user.password === password;
+    //const passwordVald = user.password === password;
 
-    if (!passwordVald) {
+    const passwordValdHash= await compareData(password, user.password);
+
+    if (!passwordValdHash) {
 
       return res.status(404).json({ message: "Clave incorrecta" });
 
@@ -70,6 +78,32 @@ routerSessions.post("/login", async (req, res) => {
 
 });
 
+*/
+
+
+routerSessions.post("/signup", passport.authenticate("signup",
+  {
+    successRedirect: "/api/views/products",
+    failureRedirect: "/api/views/error"
+  })
+
+)
+
+routerSessions.post("/login", passport.authenticate("login",
+  {
+    successRedirect: "/api/views/products",
+    failureRedirect: "/api/views/error"
+  })
+
+)
+
+routerSessions.get("/auth/github", passport.authenticate('github', { scope: ['user:email'] }));
+
+routerSessions.get("/callback", passport.authenticate('github', {
+  successRedirect: "/api/views/products",
+  failureRedirect: "/api/views/error"
+}),)
+
 
 routerSessions.get("/signout", async (req, res) => {
 
@@ -77,4 +111,40 @@ routerSessions.get("/signout", async (req, res) => {
 
 });
 
+
+routerSessions.post("/restaurarPassword", async (req, res) => {
+
+  const { email, newPassword } = req.body
+
+
+  if (!email || !newPassword) {
+
+    return res.status(400).json({ message: "Faltan datos requeridos" });
+
+  }
+
+  try {
+    const user = await usersManagerDB.findByEmail(email);
+
+
+    if (!user) {
+      return res.redirect("/api/views/signup")
+    }
+
+    const hashedNewPassword = await hashData(newPassword);
+
+    user.password = hashedNewPassword;
+
+    await user.save()
+
+    res.status(200).json({ message: "password update" });
+
+
+
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+
+});
 export { routerSessions };
