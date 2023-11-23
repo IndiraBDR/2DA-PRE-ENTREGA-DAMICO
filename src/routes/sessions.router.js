@@ -99,6 +99,8 @@ routerSessions.post("/login", passport.authenticate("login",
 
 routerSessions.get("/auth/github", passport.authenticate('github', { scope: ['user:email'] }));
 
+
+
 routerSessions.get("/callback", passport.authenticate('github', {
   successRedirect: "/api/views/products",
   failureRedirect: "/api/views/error"

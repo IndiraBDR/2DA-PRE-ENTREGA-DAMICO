@@ -67,7 +67,8 @@ routerViews.get("/products", async (req, res) => {
 
   res.render("products", {
     productsData: productsObject,
-    user: {name}
+    user: {name},
+    style: "product"
   });
 
 
