@@ -2,10 +2,12 @@ import passport from "passport";
 import { UsersManagerDB } from "./dao/managerDB/usersManagerDB.js"
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GitHubStrategy } from "passport-github2";
+import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
 import { hashData, compareData } from "./utils.js";
 
 
 const usersManagerDB = new UsersManagerDB();
+const SECRETJWT = "jwtsecret";
 
 passport.use("signup", new LocalStrategy({ passReqToCallback: true, usernameField: "email" }, async (req, email, password, done) => {
 
@@ -13,7 +15,7 @@ passport.use("signup", new LocalStrategy({ passReqToCallback: true, usernameFiel
 
     if (!email || !password || !name || !last_name) {
 
-        return done(null, false)
+        return done(null, false, { message: "All fields are required" })
 
     }
 
@@ -33,11 +35,9 @@ passport.use("signup", new LocalStrategy({ passReqToCallback: true, usernameFiel
 
 
 passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
-
-
     if (!email || !password) {
 
-        return done(null, false)
+        return done(null, false, { message: "All fields are required" })
 
     }
 
@@ -45,7 +45,7 @@ passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email
         const user = await usersManagerDB.findByEmail(email);
 
         if (!user) {
-            return done(null, false)
+            return done(null, false, { message: "Incorrect email or password" })
         }
 
 
@@ -53,23 +53,10 @@ passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email
 
         if (!passwordValdHash) {
 
-            return done(null, false)
+            return done(null, false, { message: "Incorrect email or password" })
 
         }
-        /*
-            let correoAdmin = "adminCoder@coder.com";
-            let claveAdmin = "adminCod3r123";
-        
-            if (password === claveAdmin && email === correoAdmin) {
-        
-              req.session.user = { email, name: user.name, isAdmin: true };
-        
-            } else {
-        
-              req.session.user = { email, name: user.name, isAdmin: false };
-        
-            };
-        */
+       
         done(null, user)
 
     } catch (error) {
@@ -78,13 +65,52 @@ passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email
 }))
 
 
+
+//NUEVO JWT
+
+const fromCookies = (req) => {
+
+    if (!req.cookies.token) {
+
+        return console.log("ERROR");
+
+    }
+
+    return req.cookies.token
+
+}
+
+
+passport.use("current", new JWTStrategy(
+
+
+    {
+
+        jwtFromRequest: ExtractJwt.fromExtractors([fromCookies]),
+        secretOrKey: SECRETJWT,
+
+    },
+
+    (jwt_payload, done) => {
+
+
+        done(null, jwt_payload)
+
+    }
+
+
+))
+
+
+
 passport.use("github", new GitHubStrategy({
     clientID: 'Iv1.15e1a8911be07618',
     clientSecret: 'bc029f89fd4e4db369b04da8b6d31623b1476e53',
     callbackURL: "http://localhost:8080/api/sessions/callback",
-    scope:["user:email"]
+    scope: ["user:email"]
 },
     async (accessToken, refreshToken, profile, done) => {
+
 
 
         try {
@@ -152,7 +178,6 @@ passport.deserializeUser(async (id, done) => {
         done(error)
 
     }
-
 
 
 })

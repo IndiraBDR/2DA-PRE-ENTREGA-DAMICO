@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { UsersManagerDB } from "../dao/managerDB/usersManagerDB.js"
-import { hashData, compareData } from "../utils.js";
+import { hashData, compareData, generateToken } from "../utils.js";
 import passport from "passport";
 
 const routerSessions = Router();
@@ -81,21 +81,45 @@ routerSessions.post("/login", async (req, res) => {
 */
 
 
-routerSessions.post("/signup", passport.authenticate("signup",
-  {
-    successRedirect: "/api/views/products",
-    failureRedirect: "/api/views/error"
-  })
+
+routerSessions.post("/signup", passport.authenticate("signup"), (req, res) => {
+
+  return res.redirect("/api/views/products")
+
+}
+
 
 )
 
-routerSessions.post("/login", passport.authenticate("login",
-  {
-    successRedirect: "/api/views/products",
-    failureRedirect: "/api/views/error"
-  })
 
+routerSessions.post("/login", passport.authenticate("login", { failureMessage: true, failureRedirect: "/api/views/error" }), (req, res) => {
+
+  const { name, last_name, email } = req.user
+
+  const token = generateToken({
+    name,
+    last_name,
+    email
+  });
+
+  res.cookie("token", token, { maxAge: 60000, httpOnly: true })
+
+  return res.redirect("/api/sessions/current")
+
+
+}
 )
+
+
+
+routerSessions.get("/current", passport.authenticate("current", { session: false }), (req, res) => {
+
+  const user = req.user
+  res.json({ message: user })
+
+})
+
+
 
 routerSessions.get("/auth/github", passport.authenticate('github', { scope: ['user:email'] }));
 

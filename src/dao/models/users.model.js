@@ -1,4 +1,5 @@
 import { Schema, model} from "mongoose";
+import { mongoose } from "mongoose";
 
 const usersSchema = new Schema({
 
@@ -25,6 +26,27 @@ const usersSchema = new Schema({
         required: true,
         
     },
+
+    age:{
+        type: Number
+    },
+
+
+
+    role:{
+        type:String,
+        enum:["user" , "admin"],
+        default: "user"
+    },
+
+    cart:{
+
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Carts'
+        
+    },
+
+  
 
     isGithub: {
 
