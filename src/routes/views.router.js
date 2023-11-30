@@ -136,11 +136,15 @@ routerViews.get("/restaurarPassword", async (req, res) => {
 
 routerViews.get('/error', async (req, res) => {
 
-  //console.log(req);
+  const reqMessages = req.session.messages;
 
- let message = req.session.messages[0]
+  const message = reqMessages[reqMessages.length - 1]
+
 
   res.render("error", { message })
 })
 
 export { routerViews };
+
+
+
