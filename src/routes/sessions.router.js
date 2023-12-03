@@ -102,6 +102,8 @@ routerSessions.post("/login", passport.authenticate("login", { failureMessage: t
     email
   });
 
+  console.log(token);
+
   res.cookie("token", token, { maxAge: 60000, httpOnly: true })
 
   return res.redirect("/api/sessions/current")
