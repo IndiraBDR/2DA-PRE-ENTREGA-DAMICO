@@ -4,10 +4,13 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GitHubStrategy } from "passport-github2";
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
 import { hashData, compareData } from "./utils.js";
+import { objConfigEnv  } from "./config/config.js";
 
 
 const usersManagerDB = new UsersManagerDB();
-const SECRETJWT = "jwtsecret";
+
+//ACA CAMBIE UNA VARIABLE ENV
+const SECRETJWT = objConfigEnv.secret_jwt;
 
 passport.use("signup", new LocalStrategy({ passReqToCallback: true, usernameField: "email" }, async (req, email, password, done) => {
 

@@ -87,4 +87,6 @@ class ProductManagerDB {
 
 }
 
+
+export const productManagerDB = new ProductManagerDB();
 export { ProductManagerDB };

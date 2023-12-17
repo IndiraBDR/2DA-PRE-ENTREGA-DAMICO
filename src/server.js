@@ -9,6 +9,7 @@ import { Server } from "socket.io";
 import { ProductManager } from "./dao/managerFileS/productManager.js";
 import { MessageManagerDB } from "./dao/managerDB/messagesManagerDB.js";
 import { ProductManagerDB  } from "./dao/managerDB/productManagerDB.js";
+import { objConfigEnv } from "./config/config.js";
 import  MongoStore  from "connect-mongo";
 import  cookieParser  from "cookie-parser";
 import session from "express-session";
@@ -26,8 +27,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 
-
-const URI = 'mongodb+srv://indiradamico22:elamoresdedos@cluster0.n1eqmw8.mongodb.net/ecommerce?retryWrites=true&w=majority';
+//ACA CAMBIE VARIABLE ENV
+const URI = objConfigEnv.mongo_uri;
 
 app.use(session({ 
 
@@ -51,6 +52,9 @@ app.use("/api/views", routerViews);
 app.use("/api/sessions", routerSessions);
 
 
+//ACA INTENTE CAMBIAR VARIABLE ENV: Intente colocolar en el listen la variale PORT, pero cuando lo hacia 
+//me tirabaun error diciendo que se estaba utilizando en otra parte duplicado el puerto 8080
+//const PORT = objConfigEnv.port;
 
 const httpServer = app.listen(8080, () => {
   console.log("LEYENDO PUERTO 8080");

@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { CartManager } from "../dao/managerFileS/cartManager.js";
-import { CartManagerDB } from "../dao/managerDB/cartsManagerDB.js";
+import { findAllCartController, findCartByIdController, createOneCartController,addProductToCartController,updateCartController, addProductToCartQuantityController, deleteTotalProductToCartController,deleteProductToCartController } from "../controllers/cart.controller.js";
+
 const routerCart = Router();
-const cartManager = new CartManager();
-const cartManagerBD = new CartManagerDB();
 
 /* FILE SYSTEM
+
+const cartManager = new CartManager();
 
 routerCart.get("/", async (req, res) => {
   try {
@@ -74,108 +74,21 @@ routerCart.post("/:cid/product/:pid", async (req, res) => {
 //Nuevo DB
 
 
-routerCart.get("/", async (req, res) => {
-
-  try {
-    const carts = await cartManagerBD.findAllCart()
-
-
-
-    res.status(200).json({ message: "carts total", carts });
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-routerCart.get("/:idCart", async (req, res) => {
-
-  const { idCart } = req.params;
-
-  try {
-    const cart = await cartManagerBD.findCartById(idCart);
-
-    res.status(200).json({ message: "cart by id", cart });
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-
-routerCart.post("/", async (req, res) => {
-
-  try {
-    const createCart = await cartManagerBD.createOneCart();
-
-
-    res.status(200).json({ message: "carrito creado", cart: createCart });
-
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-routerCart.post("/:idCart/products/:idProduct", async (req, res) => {
-
-  const { idCart, idProduct } = req.params;
-
-  try {
-    const productAdded = await cartManagerBD.addProductToCart(idCart, idProduct);
-
-    res.status(200).json({ message: "PRODUCTO AGREGADO", product: productAdded });
-
-
-  } catch (error) {
-
-    console.log(error);
-    res.status(500).json({ message: error.message });
-  }
-});
-
+routerCart.get("/", findAllCartController);
+routerCart.get("/:idCart", findCartByIdController);
+routerCart.post("/", createOneCartController);
+routerCart.post("/:idCart/products/:idProduct", addProductToCartController);
 
 //NUEVO
 
-routerCart.put("/:idCart", async (req, res) => {
+routerCart.put("/:idCart", updateCartController);
+routerCart.put("/:idCart/products/:idProduct", addProductToCartQuantityController);
+routerCart.delete("/:idCart", deleteTotalProductToCartController);
+routerCart.delete("/:idCart/products/:idProduct", deleteProductToCartController);
 
-  const { idCart } = req.params;
-  const { newProducts } = req.body;
+export { routerCart };
 
-  console.log(newProducts);
-
-  try {
-    const response = await cartManagerBD.updateCart(idCart, newProducts);
-
-    if (!response) {
-      return res.status(404).json({ message: "cart not found" });
-    }
-
-    res.status(200).json({ message: "product update in cart" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-
-routerCart.put("/:idCart/products/:idProduct", async (req, res) => {
-
-  const { idCart, idProduct } = req.params;
-  const { quantity } = req.body;
-
-
-  try {
-    const response = await cartManagerBD.addProductToCartQuantity(idCart, idProduct, quantity);
-
-    if (!response) {
-      return res.status(404).json({ message: "cart not found" });
-    }
-
-    res.status(200).json({ message: "quantity update in cart" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+//653b11f7f4fb2fc0b83af757/products/6539b0275e3d00bf535dd2cf
 
 
 /*BORRAR EL CARRITO COMPLETO
@@ -196,41 +109,3 @@ routerCart.delete("/:idCart", async (req, res) => {
   }
 });
 */
-
-routerCart.delete("/:idCart", async (req, res) => {
-
-  const { idCart } = req.params;
-
-  try {
-    const response = await cartManagerBD.deleteTotalProductToCart(idCart);
-
-    if (!response) {
-      return res.status(404).json({ message: "cart not found" });
-    }
-
-    res.status(200).json({ message: "product total delete in cart" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-routerCart.delete("/:idCart/products/:idProduct", async (req, res) => {
-
-  const { idCart, idProduct } = req.params;
-
-  try {
-    const response = await cartManagerBD.deleteProductToCart(idCart, idProduct);
-
-    if (!response) {
-      return res.status(404).json({ message: "product not found" });
-    }
-
-    res.status(200).json({ message: "User update IN CADR" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-export { routerCart };
-
-//653b11f7f4fb2fc0b83af757/products/6539b0275e3d00bf535dd2cf

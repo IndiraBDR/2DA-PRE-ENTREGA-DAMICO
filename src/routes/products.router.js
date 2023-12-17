@@ -1,13 +1,12 @@
 import { Router } from "express";
-import { ProductManager } from "../dao/managerFileS/productManager.js";
-import { ProductManagerDB } from "../dao/managerDB/productManagerDB.js";
+import { findAllController, findByIdController, createOneController,updateOneController,deleteOneController  } from "../controllers/products.controller.js";
 
 const routerProduct = Router();
-const productManager = new ProductManager();
-const productManagerDB = new ProductManagerDB();
 
 
 /* FILE SYSTEM
+
+const productManager = new ProductManager();
 
 routerProduct.get("/", async (req, res) => {
   const { limit } = req.query;
@@ -94,80 +93,10 @@ routerProduct.put("/:pid", async (req, res) => {
 
 //Nuevo DB
 
-routerProduct.get("/", async (req, res) => {
-
-  try {
-    const products = await productManagerDB.findAll(req.query)
-
-    res.status(200).json({ message: "product total", products });
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-
-routerProduct.get("/:pid", async (req, res) => {
-  
-  const { pid } = req.params;
-
-  try {
-    let productoFiltrado = await productManagerDB.findById(pid);
-
-    if (!productoFiltrado) {
-      res.status(404).json({ message: "product not found" });
-    } else {
-      res.status(200).json({ message: "product found", productoFiltrado });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-routerProduct.post("/", async (req, res) => {
-
-  try {
-    const createProduct = await productManagerDB.createOne(req.body);
-    res.status(200).json({ message: "product creado", product: createProduct });
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-
-routerProduct.put("/:pid", async (req, res) => {
-
-  const { pid } = req.params;
-
-  try {
-    const response = await productManagerDB.updateOne(pid, req.body);
-
-    if (!response) {
-      return res.status(404).json({ message: "product not found" });
-    }
-
-    res.status(200).json({ message: "User update" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-routerProduct.delete("/:pid", async (req, res) => {
-
-  const { pid } = req.params;
-
-  try {
-    let response = await productManagerDB.deleteOne(pid);
-
-    if (!response) {
-      return res.status(404).json({ message: "product not found" });
-    }
-
-    res.status(200).json({ message: "User delete" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+routerProduct.get("/", findAllController);
+routerProduct.get("/:pid", findByIdController);
+routerProduct.post("/", createOneController );
+routerProduct.put("/:pid", updateOneController);
+routerProduct.delete("/:pid", deleteOneController);
 
 export { routerProduct };

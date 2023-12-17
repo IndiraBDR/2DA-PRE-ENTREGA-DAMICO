@@ -74,7 +74,7 @@ class CartManagerDB {
     };
 
 
-
+//este
     async updateCart(cartId, newProductBody) {
 
         const cartById = await cartsModel.findById(cartId);
@@ -139,5 +139,7 @@ class CartManagerDB {
     };
 
 }
+
+export const cartManagerBD = new CartManagerDB();
 
 export { CartManagerDB };

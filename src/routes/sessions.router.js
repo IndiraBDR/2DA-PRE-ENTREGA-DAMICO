@@ -1,10 +1,9 @@
 import { Router } from "express";
-import { UsersManagerDB } from "../dao/managerDB/usersManagerDB.js"
-import { hashData, compareData, generateToken } from "../utils.js";
+import { generateTokenController, userReqController,restaurarPasswordController } from "../controllers/sessions.controller.js";
 import passport from "passport";
 
 const routerSessions = Router();
-const usersManagerDB = new UsersManagerDB();
+
 
 /* LOGIN Y SIGNUP MANUAL
 
@@ -92,34 +91,11 @@ routerSessions.post("/signup", passport.authenticate("signup"), (req, res) => {
 )
 
 
-routerSessions.post("/login", passport.authenticate("login", { failureMessage: true, failureRedirect: "/api/views/error" }), (req, res) => {
-
-  const { name, last_name, email } = req.user
-
-  const token = generateToken({
-    name,
-    last_name,
-    email
-  });
-
-  console.log(token);
-
-  res.cookie("token", token, { maxAge: 60000, httpOnly: true })
-
-  return res.redirect("/api/sessions/current")
-
-
-}
-)
+routerSessions.post("/login", passport.authenticate("login", { failureMessage: true, failureRedirect: "/api/views/error" }),generateTokenController)
 
 
 
-routerSessions.get("/current", passport.authenticate("current", { session: false }), (req, res) => {
-
-  const user = req.user
-  res.json({ message: user })
-
-})
+routerSessions.get("/current", passport.authenticate("current", { session: false }), userReqController  )
 
 
 
@@ -140,39 +116,6 @@ routerSessions.get("/signout", async (req, res) => {
 });
 
 
-routerSessions.post("/restaurarPassword", async (req, res) => {
+routerSessions.post("/restaurarPassword", restaurarPasswordController  );
 
-  const { email, newPassword } = req.body
-
-
-  if (!email || !newPassword) {
-
-    return res.status(400).json({ message: "Faltan datos requeridos" });
-
-  }
-
-  try {
-    const user = await usersManagerDB.findByEmail(email);
-
-
-    if (!user) {
-      return res.redirect("/api/views/signup")
-    }
-
-    const hashedNewPassword = await hashData(newPassword);
-
-    user.password = hashedNewPassword;
-
-    await user.save()
-
-    res.status(200).json({ message: "password update" });
-
-
-
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-
-});
 export { routerSessions };

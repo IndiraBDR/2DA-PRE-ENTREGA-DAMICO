@@ -27,5 +27,6 @@ class UsersManagerDB {
 
 
 }
-
+export const userManagerDB = new UsersManagerDB();
 export { UsersManagerDB  };
+
