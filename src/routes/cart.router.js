@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { findAllCartController, findCartByIdController, createOneCartController,addProductToCartController,updateCartController, addProductToCartQuantityController, deleteTotalProductToCartController,deleteProductToCartController } from "../controllers/cart.controller.js";
-
+import { findAllCartController, findCartByIdController, createOneCartController,addProductToCartController,updateCartController, addProductToCartQuantityController, deleteTotalProductToCartController,deleteProductToCartController,deleteToCart, purchaseCart } from "../controllers/carts.controller.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
 const routerCart = Router();
 
 /* FILE SYSTEM
@@ -73,39 +73,23 @@ routerCart.post("/:cid/product/:pid", async (req, res) => {
 
 //Nuevo DB
 
-
 routerCart.get("/", findAllCartController);
 routerCart.get("/:idCart", findCartByIdController);
 routerCart.post("/", createOneCartController);
 routerCart.post("/:idCart/products/:idProduct", addProductToCartController);
 
-//NUEVO
-
+//este
 routerCart.put("/:idCart", updateCartController);
 routerCart.put("/:idCart/products/:idProduct", addProductToCartQuantityController);
 routerCart.delete("/:idCart", deleteTotalProductToCartController);
 routerCart.delete("/:idCart/products/:idProduct", deleteProductToCartController);
+
+routerCart.get("/:idCart/purchase", purchaseCart);
+
+routerCart.delete("/:idCart/elimicar-carrito",deleteToCart)
 
 export { routerCart };
 
 //653b11f7f4fb2fc0b83af757/products/6539b0275e3d00bf535dd2cf
 
 
-/*BORRAR EL CARRITO COMPLETO
-routerCart.delete("/:idCart", async (req, res) => {
-
-  const { idCart} = req.params;
-
-  try {
-    const response = await cartManagerBD.deleteCartById(idCart);
-
-    if (!response) {
-      return res.status(404).json({ message: "cart not found" });
-    }
-
-    res.status(200).json({ message: "cart delete" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-*/

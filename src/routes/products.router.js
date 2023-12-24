@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { findAllController, findByIdController, createOneController,updateOneController,deleteOneController  } from "../controllers/products.controller.js";
-
+import { authMiddleware } from "../middleware/auth.middleware.js";
 const routerProduct = Router();
 
 
@@ -93,10 +93,12 @@ routerProduct.put("/:pid", async (req, res) => {
 
 //Nuevo DB
 
+//,authMiddleware(["user"])
+
 routerProduct.get("/", findAllController);
 routerProduct.get("/:pid", findByIdController);
-routerProduct.post("/", createOneController );
-routerProduct.put("/:pid", updateOneController);
-routerProduct.delete("/:pid", deleteOneController);
+routerProduct.post("/",authMiddleware(["admin"]) , createOneController );
+routerProduct.put("/:pid" , updateOneController);
+routerProduct.delete("/:pid", authMiddleware(["admin"]) , deleteOneController);
 
 export { routerProduct };

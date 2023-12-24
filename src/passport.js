@@ -1,10 +1,14 @@
 import passport from "passport";
-import { UsersManagerDB } from "./dao/managerDB/usersManagerDB.js"
+import { UsersManagerDB } from "./DAL/dao/mongoDao/users.dao.mongo.js"
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GitHubStrategy } from "passport-github2";
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
 import { hashData, compareData } from "./utils.js";
 import { objConfigEnv  } from "./config/config.js";
+import { cartManagerBD } from "./DAL/dao/mongoDao/carts.dao.mongo.js";
+
+
+import {  UsersRequestDto } from "./DAL/dtos/users-request.dto.js";
 
 
 const usersManagerDB = new UsersManagerDB();
@@ -26,9 +30,33 @@ passport.use("signup", new LocalStrategy({ passReqToCallback: true, usernameFiel
 
         const hashedPassword = await hashData(password);
 
-        const createUser = await usersManagerDB.createOne({ ...req.body, password: hashedPassword });
+        let correoAdmin = "administradorCA@coder.com";
 
-        done(null, createUser)
+        const createdCart =await cartManagerBD.createOne()
+
+//ACAAAAAA DTOOOO
+        const userDtoReq = new UsersRequestDto({ ...req.body,cart: createdCart._id, password: hashedPassword})
+
+
+        let createUser;
+
+        if (email === correoAdmin) {
+
+            createUser = await usersManagerDB.createOne({ ...userDtoReq, roles: "admin" });
+
+           // ANTES createUser = await usersManagerDB.createOne({ ...req.body,cart: createdCart._id, roles: "admin", password: hashedPassword });
+            console.log(createUser);
+
+            return done(null, createUser)
+        }
+
+
+           //ANTES createUser = await usersManagerDB.createOne({ ...req.body,cart: createdCart._id, password: hashedPassword });
+        createUser = await usersManagerDB.createOne(userDtoReq);
+
+     console.log(createUser);
+
+  done(null, createUser)
 
 
     } catch (error) {

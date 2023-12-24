@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { ProductManager } from "../dao/managerFileS/productManager.js";
-import { ProductManagerDB } from "../dao/managerDB/productManagerDB.js";
-import { CartManagerDB } from "../dao/managerDB/cartsManagerDB.js";
+import { ProductManager } from "../DAL/dao/fileSistDao/products.dao.fileS.js";
+import { ProductManagerDB } from "../DAL/dao/mongoDao/products.dao.mongo.js";
+import { CartManagerDB } from "../DAL/dao/mongoDao/carts.dao.mongo.js";
 
 const productManagerDB = new ProductManagerDB();
 const cartManagerDB = new CartManagerDB();

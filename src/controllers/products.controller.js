@@ -1,8 +1,14 @@
 import { findAllServ, findByIdServ, createOneServ, updateOneServ, deleteOneServ } from "../services/products.service.js";
 
 export const findAllController = async (req, res) => {
+
+ 
   
   try {
+    /*
+    const user = req.user
+    console.log(`ESTE USER PRODUCT ${user}`);
+    */
     const products = await findAllServ(req.query)
 
     res.status(200).json({ message: "product total", products });

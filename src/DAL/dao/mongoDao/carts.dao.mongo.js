@@ -1,6 +1,15 @@
-import { cartsModel } from "../models/carts.model.js";
+import { cartsModel } from "../../models/carts.model.js";
 
-class CartManagerDB {
+import { BasicManagerDB} from "../../dao/mongoDao/basic.dao.mongo.js";
+
+class CartManagerDB extends BasicManagerDB{
+
+    constructor() {
+
+        super(cartsModel)
+    } 
+
+    /*
 
     async findAllCart() {
 
@@ -8,6 +17,8 @@ class CartManagerDB {
         return response;
 
     };
+
+    */
 
     async findCartById(idCart) {
 
@@ -94,7 +105,7 @@ class CartManagerDB {
     };
 
 
-    async deleteCartById(idCart) {
+    async deleteOne(idCart) {
         try {
 
             const response = await cartsModel.deleteOne({ _id: idCart });

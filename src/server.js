@@ -2,13 +2,14 @@ import express from "express";
 import { routerProduct } from "./routes/products.router.js";
 import { routerCart } from "./routes/cart.router.js";
 import { routerSessions  } from "./routes/sessions.router.js";
+import { routerUsers } from "./routes/users.router.js";
 import { engine } from "express-handlebars";
 import { __dirname } from "./utils.js";
 import { routerViews } from "./routes/views.router.js";
 import { Server } from "socket.io";
-import { ProductManager } from "./dao/managerFileS/productManager.js";
-import { MessageManagerDB } from "./dao/managerDB/messagesManagerDB.js";
-import { ProductManagerDB  } from "./dao/managerDB/productManagerDB.js";
+import { ProductManager } from "./DAL/dao/fileSistDao/products.dao.fileS.js";
+import { MessageManagerDB } from "./DAL/dao/mongoDao/messages.dao.mongo.js";
+import { ProductManagerDB  } from "./DAL/dao/mongoDao/products.dao.mongo.js";
 import { objConfigEnv } from "./config/config.js";
 import  MongoStore  from "connect-mongo";
 import  cookieParser  from "cookie-parser";
@@ -50,6 +51,7 @@ app.use("/api/products", routerProduct);
 app.use("/api/carts", routerCart);
 app.use("/api/views", routerViews);
 app.use("/api/sessions", routerSessions);
+app.use("/api/users", routerUsers)
 
 
 //ACA INTENTE CAMBIAR VARIABLE ENV: Intente colocolar en el listen la variale PORT, pero cuando lo hacia 
@@ -108,7 +110,9 @@ socketServer.on("connection", async (socket) => {
 
     messagesTotal.push(info);
 
-    const messageTotal = await messageManager.createOneMessage(info);
+    const messageTotal = await messageManager.createOne(info);
+
+  
 
     socketServer.emit("chatTotal", messagesTotal)
 

@@ -1,8 +1,7 @@
 import { Schema, model} from "mongoose";
 import mongoosePaginate from 'mongoose-paginate-v2'
 
-//import pkg from 'mongoose-paginate-v2';
-//const { mongoosePaginate } = pkg;
+
 
 
 const productsSchema = new Schema({

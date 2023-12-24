@@ -1,4 +1,4 @@
-import { findAllCartServ, findCartByIdServ, createOneCartServ, addProductToCartServ, updateCartServ, addProductToCartQuantityServ, deleteTotalProductToCartServ, deleteProductToCartServ } from "../services/carts.service.js";
+import { findAllCartServ, findCartByIdServ, createOneCartServ, addProductToCartServ, updateCartServ, addProductToCartQuantityServ, deleteTotalProductToCartServ, deleteProductToCartServ,deleteCartByIdServ,purchase } from "../services/carts.service.js";
 
 export const findAllCartController = async (req, res) => {
 
@@ -134,6 +134,38 @@ export const deleteProductToCartController = async (req, res) => {
     }
 
     res.status(200).json({ message: "User update IN CADR" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+
+export const purchaseCart= async(req,res)=>{
+
+  const { idCart } = req.params;
+
+ 
+  const response =  await purchase(idCart);
+
+  res.json({response})
+
+
+}
+
+//ELIMINAR CARRITO
+
+export const deleteToCart =async (req, res) => {
+
+  const { idCart} = req.params;
+
+  try {
+    const response = await deleteCartByIdServ(idCart);
+
+    if (!response) {
+      return res.status(404).json({ message: "cart not found" });
+    }
+
+    res.status(200).json({ message: "cart delete" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
