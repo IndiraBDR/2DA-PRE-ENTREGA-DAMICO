@@ -3,6 +3,7 @@ import { cartManagerBD } from "../DAL/dao/mongoDao/carts.dao.mongo.js";
 import { ticketsManagerDB  } from "../DAL/dao/mongoDao/tickets.dao.mongo.js";
 
 import {  findUserByCartIdServ } from "../services/users.service.js";
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -151,7 +152,7 @@ export const purchase= async(idCart)=>{
 if (availableProducts.length) {
 
     const ticket={
-        code: "ULTIMAPRUEBA",
+        code: uuidv4(),
         purchase_datetime: new Date(),
         amount:totalAmount,
         purchase: email

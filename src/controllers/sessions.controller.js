@@ -2,7 +2,8 @@ import { hashData, compareData, generateToken } from "../utils.js";
 import { findByEmailServ } from "../services/users.service.js";
 
 
-//import { UsersResponse } from "../DAL/dtos/users-response.dto.js";
+
+import  UsersResponse from "../DAL/dtos/users-response.dto.js";
 
 
 const generateTokenController = (req, res) => {
@@ -31,11 +32,9 @@ const userReqController = (req, res) => {
 
   const user = req.user
 
-  console.log(req);
+  const newUserDtoRes = new UsersResponse(user)
 
- // const newUserDtoRes = new UsersResponse({...user})
-
-  res.json({ message: user })
+  res.json({ message: newUserDtoRes })
 
 }
 
