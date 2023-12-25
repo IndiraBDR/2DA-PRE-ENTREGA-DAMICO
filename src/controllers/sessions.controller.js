@@ -1,9 +1,6 @@
 import { hashData, compareData, generateToken } from "../utils.js";
 import { findByEmailServ } from "../services/users.service.js";
-
-
-
-import  UsersResponse from "../DAL/dtos/users-response.dto.js";
+import UsersResponseDto from "../DAL/dtos/users-response.dto.js";
 
 
 const generateTokenController = (req, res) => {
@@ -20,8 +17,8 @@ const generateTokenController = (req, res) => {
 
   res.cookie("token", token, { maxAge: 60000, httpOnly: true })
 
- return res.redirect("/api/sessions/current")
- //return res.redirect("/api/products")
+  return res.redirect("/api/sessions/current")
+  //return res.redirect("/api/products")
 
 
 }
@@ -32,7 +29,7 @@ const userReqController = (req, res) => {
 
   const user = req.user
 
-  const newUserDtoRes = new UsersResponse(user)
+  const newUserDtoRes = new UsersResponseDto(user)
 
   res.json({ message: newUserDtoRes })
 

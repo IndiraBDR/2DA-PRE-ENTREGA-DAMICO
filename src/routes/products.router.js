@@ -98,7 +98,7 @@ routerProduct.put("/:pid", async (req, res) => {
 routerProduct.get("/", findAllController);
 routerProduct.get("/:pid", findByIdController);
 routerProduct.post("/",authMiddleware(["admin"]) , createOneController );
-routerProduct.put("/:pid" , updateOneController);
+routerProduct.put("/:pid",authMiddleware(["admin"]) , updateOneController);
 routerProduct.delete("/:pid", authMiddleware(["admin"]) , deleteOneController);
 
 export { routerProduct };

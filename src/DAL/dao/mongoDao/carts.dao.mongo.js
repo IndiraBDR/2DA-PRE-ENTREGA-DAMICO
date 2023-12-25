@@ -1,5 +1,4 @@
 import { cartsModel } from "../../models/carts.model.js";
-
 import { BasicManagerDB} from "../../dao/mongoDao/basic.dao.mongo.js";
 
 class CartManagerDB extends BasicManagerDB{
@@ -9,16 +8,7 @@ class CartManagerDB extends BasicManagerDB{
         super(cartsModel)
     } 
 
-    /*
-
-    async findAllCart() {
-
-        const response = await cartsModel.find();
-        return response;
-
-    };
-
-    */
+   
 
     async findCartById(idCart) {
 
@@ -56,8 +46,6 @@ class CartManagerDB extends BasicManagerDB{
     };
 
 
-    //NUEVO
-
 
     async addProductToCartQuantity(idCart, idProduct, quantity) {
 
@@ -92,7 +80,7 @@ class CartManagerDB extends BasicManagerDB{
 
         const newProduct = newProductBody;
 
-        console.log(cartById.products);
+       // console.log(cartById.products);
 
         // console.log(newProduct);
 

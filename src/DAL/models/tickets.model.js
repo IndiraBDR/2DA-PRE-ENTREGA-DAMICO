@@ -1,8 +1,4 @@
 import { Schema, model} from "mongoose";
-import mongoosePaginate from 'mongoose-paginate-v2'
-
-
-
 
 const ticketsSchema = new Schema({
 
@@ -16,7 +12,6 @@ const ticketsSchema = new Schema({
 
     purchase_datetime: {
         type: Date,
-
         required: true
     },
 

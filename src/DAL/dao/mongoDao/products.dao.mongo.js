@@ -1,4 +1,3 @@
-import { response } from "express";
 import { productsModel } from "../../models/products.model.js";
 import { BasicManagerDB} from "../../dao/mongoDao/basic.dao.mongo.js";
 

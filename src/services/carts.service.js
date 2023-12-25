@@ -1,21 +1,12 @@
 import { cartManagerBD } from "../DAL/dao/mongoDao/carts.dao.mongo.js";
-
-import { ticketsManagerDB  } from "../DAL/dao/mongoDao/tickets.dao.mongo.js";
-
-import {  findUserByCartIdServ } from "../services/users.service.js";
+import { ticketsManagerDB } from "../DAL/dao/mongoDao/tickets.dao.mongo.js";
+import { findUserByCartIdServ } from "../services/users.service.js";
 import { v4 as uuidv4 } from 'uuid';
 
 
+export const findAllCartServ = () => {
 
-import { userManagerDB } from "../DAL/dao/mongoDao/users.dao.mongo.js";
-
-import {  usersModel } from "../DAL/models/users.model.js";
-
-
-
-export const findAllCartServ= () => {
-
-    const carts =  cartManagerBD.findAll()
+    const carts = cartManagerBD.findAll()
 
     return carts
 
@@ -24,15 +15,15 @@ export const findAllCartServ= () => {
 
 export const findCartByIdServ = (idCart) => {
 
-    const cart =  cartManagerBD.findCartById(idCart);
+    const cart = cartManagerBD.findCartById(idCart);
 
-    return  cart
+    return cart
 
 
 }
 
 
-export const createOneCartServ = () =>{
+export const createOneCartServ = () => {
 
     const createCart = cartManagerBD.createOneCart();
 
@@ -42,27 +33,27 @@ export const createOneCartServ = () =>{
 }
 
 
-export const addProductToCartServ = (idCart, idProduct)=>{
+export const addProductToCartServ = (idCart, idProduct) => {
 
 
-    const updatedCart=  cartManagerBD.addProductToCart(idCart, idProduct);
-
-    return updatedCart
-
-
-}
-
-
-export const  updateCartServ=(idCart, newProductBody)=>{
-
-    const updatedCart =  cartManagerBD.updateCart(idCart, newProductBody);
+    const updatedCart = cartManagerBD.addProductToCart(idCart, idProduct);
 
     return updatedCart
 
 
 }
 
-export const addProductToCartQuantityServ = (idCart, idProduct, quantity) =>{
+
+export const updateCartServ = (idCart, newProductBody) => {
+
+    const updatedCart = cartManagerBD.updateCart(idCart, newProductBody);
+
+    return updatedCart
+
+
+}
+
+export const addProductToCartQuantityServ = (idCart, idProduct, quantity) => {
 
     const updatedCart = cartManagerBD.addProductToCartQuantity(idCart, idProduct, quantity);
 
@@ -73,32 +64,32 @@ export const addProductToCartQuantityServ = (idCart, idProduct, quantity) =>{
 
 
 //ELIMINAR CARRITO
-export const  deleteCartByIdServ = (idCart) =>{
+export const deleteCartByIdServ = (idCart) => {
 
-    const updatedCart =  cartManagerBD.deleteOne(idCart);
+    const updatedCart = cartManagerBD.deleteOne(idCart);
     return updatedCart
 
 
 }
 
 
-export const  deleteProductToCartServ = (idCart, idProduct) =>{
+export const deleteProductToCartServ = (idCart, idProduct) => {
 
-    const updatedCart =  cartManagerBD.deleteProductToCart(idCart, idProduct);
+    const updatedCart = cartManagerBD.deleteProductToCart(idCart, idProduct);
     return updatedCart
 }
 
 
-export const  deleteTotalProductToCartServ= (idCart) =>{
+export const deleteTotalProductToCartServ = (idCart) => {
 
-    const updatedCart =  cartManagerBD.deleteTotalProductToCart(idCart);
+    const updatedCart = cartManagerBD.deleteTotalProductToCart(idCart);
     return updatedCart
 
 
 }
 
 
-export const purchase= async(idCart)=>{
+export const purchase = async (idCart) => {
 
     const cart = await cartManagerBD.findCartById(idCart);
 
@@ -108,66 +99,54 @@ export const purchase= async(idCart)=>{
 
     let unavailableProdutcs = [];
 
-    let totalAmount =0;
+    let totalAmount = 0;
 
     for (let item of products) {
 
-        if (item.product.stock >= item.quantity){
+        if (item.product.stock >= item.quantity) {
             //disponible
 
             availableProducts.push(item)
 
             item.product.stock -= item.quantity
 
-           await item.product.save()
+            await item.product.save()
 
             totalAmount += item.quantity * item.product.price;
 
-        }else{
-
+        } else {
             //no disponible
-            
-            //653e8a45417a1d5ffca9aa1f
-            //653e8a6c417a1d5ffca9aa21
             unavailableProdutcs.push(item)
         }
-     
+
     }
 
     cart.products = unavailableProdutcs
     await cart.save()
 
-     //EMAIL 
+    const userByIdCart = await findUserByCartIdServ(idCart)
+    const email = userByIdCart.email
 
-     const userByIdCart = await findUserByCartIdServ(idCart)
+    if (availableProducts.length) {
 
-      const email=  userByIdCart.email
+        const ticket = {
+            code: uuidv4(),
+            purchase_datetime: new Date(),
+            amount: totalAmount,
+            purchase: email
+        }
 
-      console.log(email);
+        const newTik = await ticketsManagerDB.createOne(ticket)
 
+        return { availableProducts, totalAmount }
 
-      //EMAIL 
-
-
-if (availableProducts.length) {
-
-    const ticket={
-        code: uuidv4(),
-        purchase_datetime: new Date(),
-        amount:totalAmount,
-        purchase: email
     }
 
-  const newTik= await ticketsManagerDB.createOne(ticket)
 
-  //console.log(`NEW TICK ${newTik}`);
+    return { unavailableProdutcs }
 
-    return {availableProducts, totalAmount}
-    
+
 }
 
-
-return{unavailableProdutcs}
-    
-
-}
+//653e8a45417a1d5ffca9aa1f
+//653e8a6c417a1d5ffca9aa21

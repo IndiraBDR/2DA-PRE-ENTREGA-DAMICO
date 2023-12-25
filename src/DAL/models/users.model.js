@@ -56,8 +56,6 @@ const usersSchema = new Schema({
     },
 
     
-
-
 });
 
 const usersModel = model("Users", usersSchema);

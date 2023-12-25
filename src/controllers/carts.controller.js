@@ -1,4 +1,4 @@
-import { findAllCartServ, findCartByIdServ, createOneCartServ, addProductToCartServ, updateCartServ, addProductToCartQuantityServ, deleteTotalProductToCartServ, deleteProductToCartServ,deleteCartByIdServ,purchase } from "../services/carts.service.js";
+import { findAllCartServ, findCartByIdServ, createOneCartServ, addProductToCartServ, updateCartServ, addProductToCartQuantityServ, deleteTotalProductToCartServ, deleteProductToCartServ, deleteCartByIdServ, purchase } from "../services/carts.service.js";
 
 export const findAllCartController = async (req, res) => {
 
@@ -66,8 +66,6 @@ export const updateCartController = async (req, res) => {
 
   const { idCart } = req.params;
   const { newProducts } = req.body;
-
- // console.log(newProducts);
 
   try {
     const updatedCart = await updateCartServ(idCart, newProducts);
@@ -140,23 +138,23 @@ export const deleteProductToCartController = async (req, res) => {
 }
 
 
-export const purchaseCart= async(req,res)=>{
+export const purchaseCartController = async (req, res) => {
 
   const { idCart } = req.params;
 
- 
-  const response =  await purchase(idCart);
 
-  res.json({response})
+  const response = await purchase(idCart);
+
+  res.json({ response })
 
 
 }
 
-//ELIMINAR CARRITO
+//ELIMINAR CARRITO COMPLETO
 
-export const deleteToCart =async (req, res) => {
+export const deleteToCart = async (req, res) => {
 
-  const { idCart} = req.params;
+  const { idCart } = req.params;
 
   try {
     const response = await deleteCartByIdServ(idCart);

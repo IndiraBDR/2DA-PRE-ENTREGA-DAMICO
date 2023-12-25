@@ -2,6 +2,7 @@ import { Router } from "express";
 import { ProductManager } from "../DAL/dao/fileSistDao/products.dao.fileS.js";
 import { ProductManagerDB } from "../DAL/dao/mongoDao/products.dao.mongo.js";
 import { CartManagerDB } from "../DAL/dao/mongoDao/carts.dao.mongo.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const productManagerDB = new ProductManagerDB();
 const cartManagerDB = new CartManagerDB();
@@ -21,7 +22,7 @@ routerViews.get("/realtimeproducts", async (req, res) => {
 });
 
 
-routerViews.get("/chat", async (req, res) => {
+routerViews.get("/chat",authMiddleware(["user"]), async (req, res) => {
   res.render("chat");
 });
 
@@ -96,7 +97,7 @@ routerViews.get("/carts/:cartId", async (req, res) => {
 
 routerViews.get("/login", async (req, res) => {
 
-  // console.log(req);
+
 
   if (req.session.user) {
 
