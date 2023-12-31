@@ -1,5 +1,7 @@
 import { cartsModel } from "../../models/carts.model.js";
 import { BasicManagerDB} from "../../dao/mongoDao/basic.dao.mongo.js";
+import { CustomError } from "../../../errors/error.generator.js";
+import { errorsMessages } from "../../../errors/errors.enum.js";
 
 class CartManagerDB extends BasicManagerDB{
 
@@ -107,14 +109,16 @@ class CartManagerDB extends BasicManagerDB{
 
     async deleteProductToCart(idCart, idProduct) {
 
-
         const cart = await cartsModel.findById(idCart);
-
-        if (!cart) { console.log("CARRITO NO ENCONTRADO"); }
 
         const productIndex = cart.products.findIndex(p => p.product._id.equals(idProduct));
 
-        if (productIndex === -1) { console.log("PRODUCTO NO ENCONTRADO EN CARRITO"); }
+
+        if (productIndex === -1) {
+
+            return cart
+            
+        }
 
         cart.products.splice(productIndex, 1);
 

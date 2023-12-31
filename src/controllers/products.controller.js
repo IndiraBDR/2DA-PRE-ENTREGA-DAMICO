@@ -1,7 +1,9 @@
 import { findAllServ, findByIdServ, createOneServ, updateOneServ, deleteOneServ } from "../services/products.service.js";
+import { productMock } from "../mock/productMock.js";
+import { CustomError } from "../errors/error.generator.js";
+import { errorsMessages } from "../errors/errors.enum.js";
 
 export const findAllController = async (req, res) => {
-
 
 
   try {
@@ -11,7 +13,10 @@ export const findAllController = async (req, res) => {
     res.status(200).json({ message: "product total", products });
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+   res.status(500).json({ message: error.message });
+
+   
+
   }
 
 
@@ -26,7 +31,9 @@ export const findByIdController = async (req, res) => {
     let productoFiltrado = await findByIdServ(pid);
 
     if (!productoFiltrado) {
-      res.status(404).json({ message: "product not found" });
+
+     return CustomError.generateError(errorsMessages.PRODUCT_NOT_FOUND,404)
+      //res.status(404).json({ message: "product not found" });
     } else {
       res.status(200).json({ message: "product found", productoFiltrado });
     }
@@ -75,7 +82,8 @@ export const deleteOneController = async (req, res) => {
     let deletedProduct = await deleteOneServ(pid);
 
     if (!deletedProduct) {
-      return res.status(404).json({ message: "product not found" });
+     // return res.status(404).json({ message: "product not found" });
+     return CustomError.generateError(errorsMessages.PRODUCT_NOT_FOUND,404)
     }
 
     res.status(200).json({ message: "User delete" });
@@ -83,3 +91,14 @@ export const deleteOneController = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 }
+
+export const productMocksController = async (req, res, next) => {
+  try {
+      const mockData = productMock();
+    
+      res.status(200).json({ message: "Product created successfully", mockData });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+

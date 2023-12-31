@@ -1,4 +1,6 @@
 import { findAllUserService, findUserByCartIdServ } from "../services/users.service.js";
+import { CustomError } from "../errors/error.generator.js";
+import { errorsMessages } from "../errors/errors.enum.js";
 
 export const findAllUserController = async (req, res) => {
 
@@ -20,6 +22,12 @@ export const findUserByCartIdController = async (req, res) => {
 
   try {
     const userByIdCart = await findUserByCartIdServ(idCart)
+
+    if (!userByIdCart) {
+
+      CustomError.generateError(errorsMessages.USER_NOT_FOUND,404)
+
+    }
 
     const email = userByIdCart.email
 

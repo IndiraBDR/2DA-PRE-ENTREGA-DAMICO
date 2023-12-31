@@ -10,6 +10,7 @@ import { Server } from "socket.io";
 import { ProductManager } from "./DAL/dao/fileSistDao/products.dao.fileS.js";
 import { MessageManagerDB } from "./DAL/dao/mongoDao/messages.dao.mongo.js";
 import { ProductManagerDB  } from "./DAL/dao/mongoDao/products.dao.mongo.js";
+import {errorMiddleware  } from "./middleware/errors.middleware.js";
 import { objConfigEnv } from "./config/config.js";
 import  MongoStore  from "connect-mongo";
 import  cookieParser  from "cookie-parser";
@@ -51,7 +52,11 @@ app.use("/api/products", routerProduct);
 app.use("/api/carts", routerCart);
 app.use("/api/views", routerViews);
 app.use("/api/sessions", routerSessions);
-app.use("/api/users", routerUsers)
+app.use("/api/users", routerUsers);
+
+
+app.use(errorMiddleware);
+
 
 
 //ACA INTENTE CAMBIAR VARIABLE ENV: Intente colocolar en el listen la variale PORT, pero cuando lo hacia 

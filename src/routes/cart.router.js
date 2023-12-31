@@ -77,7 +77,7 @@ routerCart.post("/:cid/product/:pid", async (req, res) => {
 routerCart.get("/", findAllCartController);
 routerCart.get("/:idCart", findCartByIdController);
 routerCart.post("/", createOneCartController);
-routerCart.post("/:idCart/products/:idProduct",authMiddleware(["user"]), addProductToCartController);
+routerCart.post("/:idCart/products/:idProduct", addProductToCartController);
 //este
 routerCart.put("/:idCart", updateCartController);
 routerCart.put("/:idCart/products/:idProduct", addProductToCartQuantityController);

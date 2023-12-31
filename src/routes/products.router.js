@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { findAllController, findByIdController, createOneController,updateOneController,deleteOneController  } from "../controllers/products.controller.js";
+import { findAllController, findByIdController, createOneController,updateOneController,deleteOneController ,productMocksController } from "../controllers/products.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 const routerProduct = Router();
 
@@ -100,5 +100,8 @@ routerProduct.get("/:pid", findByIdController);
 routerProduct.post("/",authMiddleware(["admin"]) , createOneController );
 routerProduct.put("/:pid",authMiddleware(["admin"]) , updateOneController);
 routerProduct.delete("/:pid", authMiddleware(["admin"]) , deleteOneController);
+routerProduct.get('/mock/mockingproducts', productMocksController);
+
+
 
 export { routerProduct };
