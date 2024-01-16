@@ -4,6 +4,8 @@ import { ProductManagerDB } from "../DAL/dao/mongoDao/products.dao.mongo.js";
 import { CartManagerDB } from "../DAL/dao/mongoDao/carts.dao.mongo.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 
+import { logger } from "../logger.js";
+
 const productManagerDB = new ProductManagerDB();
 const cartManagerDB = new CartManagerDB();
 const productManager = new ProductManager();
@@ -22,7 +24,7 @@ routerViews.get("/realtimeproducts", async (req, res) => {
 });
 
 
-routerViews.get("/chat",authMiddleware(["user"]), async (req, res) => {
+routerViews.get("/chat", authMiddleware(["user"]), async (req, res) => {
   res.render("chat");
 });
 
@@ -143,6 +145,24 @@ routerViews.get('/error', async (req, res) => {
 
 
   res.render("error", { message })
+})
+
+
+
+routerViews.get('/loggerTest', async (req, res) => {
+
+  logger.error("PROBANDO LOGGER ERROR")
+  logger.fatal("PROBANDO LOGGER FATAL")
+  logger.warning("PROBANDO LOGGER WARNING")
+  logger.http("PROBANDO LOGGER HTTP")
+  logger.debug("PROBANDO LOGGER DEBUG")
+  logger.info("PROBANDO LOGGER INFO")
+
+
+
+  res.render("loggerTest")
+
+
 })
 
 export { routerViews };

@@ -1,0 +1,33 @@
+[31mfatal[39m: ACAAA FATAL
+[31mfatal[39m: ACAAA FATAL
+[31mfatal[39m: ACAAA FATAL
+[31merror[39m: ACAAA FATAL
+[31mfatal[39m: ACAAA FATAL
+[31merror[39m: ACAAA ERROOOOR
+[31mfatal[39m: ACAAA FATAL
+[31merror[39m: ACAAA ERROOOOR
+[31mfatal[39m: ACAAA FATAL
+[31merror[39m: ACAAA ERROOOOR
+[31mfatal[39m: ACAAA FATAL
+[31merror[39m: ACAAA ERROOOOR
+[31mfatal[39m: ACAAA FATAL
+[31merror[39m: ACAAA ERROOOOR
+[31mfatal[39m: ACAAA FATAL
+[31merror[39m: ACAAA ERROOOOR
+[31mfatal[39m: ACAAA FATAL
+[31merror[39m: Probando tipo error
+[31merror[39m: Probando tipo error
+[31merror[39m: ACAAA ERROOOOR
+[31mfatal[39m: ACAAA FATAL
+[31merror[39m: ACAAA ERROOOOR
+[31mfatal[39m: ACAAA FATAL
+{
+  message: 'ACAAA ERROOOOR',
+  level: 'error',
+  timestamp: '2024-01-14T01:30:40.215Z'
+}
+{
+  message: 'ACAAA FATAL',
+  level: 'fatal',
+  timestamp: '2024-01-14T01:30:40.222Z'
+}

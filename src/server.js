@@ -19,6 +19,9 @@ import "./db/configDB.js"
 import "./passport.js"
 import passport from "passport";
 
+
+import { logger } from "../src/logger.js"
+
 const productManager = new ProductManager();
 const messageManager = new MessageManagerDB();
 const productManagerDB = new ProductManagerDB ();
@@ -64,7 +67,8 @@ app.use(errorMiddleware);
 //const PORT = objConfigEnv.port;
 
 const httpServer = app.listen(8080, () => {
-  console.log("LEYENDO PUERTO 8080");
+  logger.info("LEYENDO PUERTO 8080");
+
 });
 
 const socketServer = new Server(httpServer);
