@@ -1,6 +1,11 @@
 import { hashData, compareData, generateToken } from "../utils.js";
 import { findByEmailServ } from "../services/users.service.js";
 import UsersResponseDto from "../DAL/dtos/users-response.dto.js";
+import { CustomError } from "../errors/error.generator.js";
+import { errorsMessages } from "../errors/errors.enum.js";
+
+import  {transporter } from "../nodemialer.js";
+
 
 
 const generateTokenController = (req, res) => {
@@ -46,12 +51,28 @@ const restaurarPasswordController = async (req, res) => {
 
   }
 
+
+
   try {
     const user = await findByEmailServ(email);
 
     if (!user) {
       return res.redirect("/api/views/signup")
     }
+
+    //IDEA DE COMO RESOLVER EL BOTON
+
+    const passwordValdHash = await compareData(newPassword, user.password);
+
+    if (passwordValdHash) {
+
+          return  CustomError.generateError(errorsMessages.PASSWORD_ALREADY_EXISTS,404)
+
+
+    }
+
+    ///////
+
 
     const hashedNewPassword = await hashData(newPassword);
 
@@ -65,6 +86,8 @@ const restaurarPasswordController = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+
+  
 
 }
 

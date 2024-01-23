@@ -6,6 +6,11 @@ import { authMiddleware } from "../middleware/auth.middleware.js";
 
 import { logger } from "../logger.js";
 
+import { transporter } from "../nodemialer.js";
+import { tr } from "@faker-js/faker";
+
+
+
 const productManagerDB = new ProductManagerDB();
 const cartManagerDB = new CartManagerDB();
 const productManager = new ProductManager();
@@ -127,6 +132,12 @@ routerViews.get("/signup", async (req, res) => {
 routerViews.get("/profile", async (req, res) => {
 
   res.render("profile")
+
+});
+
+routerViews.get("/mailAviso", async (req, res) => {
+
+  res.render("mailAviso")
 
 });
 

@@ -2,6 +2,8 @@ import { Router } from "express";
 import { generateTokenController, userReqController,restaurarPasswordController } from "../controllers/sessions.controller.js";
 import passport from "passport";
 
+import { transporter } from "../nodemialer.js";
+
 const routerSessions = Router();
 
 
@@ -117,5 +119,46 @@ routerSessions.get("/signout", async (req, res) => {
 
 
 routerSessions.post("/restaurarPassword", restaurarPasswordController  );
+
+//api/session/restaurarPassword
+
+
+//NUEVO MAILER
+
+routerSessions.post("/mailAvisoPost", 
+
+async (req, res) => {
+
+  const { email} = req.body
+
+  try {
+
+    await transporter.sendMail({
+
+      from:  "INDIRA",
+      to: email,
+      subject: "PROBANDO MAIL",
+      html:`
+      
+      
+      <button><a href="http://localhost:8080/api/views/restaurarPassword">RESTAURAR PASSWORD</a></button>
+      `
+    
+    
+     })
+  
+     res.status(200).json({ message: "MAIL ENVIADO" });
+  
+  
+    
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+
+
+}
+
+
+)
 
 export { routerSessions };

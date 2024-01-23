@@ -6,7 +6,9 @@ const errorsMessages ={
     CART_ALREADY_EXISTS: "Cart already exists",
     INVALID_CREDENTIALS: " Invalid credentials",
     USER_NOT_FOUND:"User not found ",
-    USER_ALREADY_EXISTS: "User already exists "
+    USER_ALREADY_EXISTS: "User already exists ",
+    PASSWORD_ALREADY_EXISTS:"Password already exists"
+
 
 }
 
