@@ -65,11 +65,11 @@ app.use(errorMiddleware);
 
 //ACA INTENTE CAMBIAR VARIABLE ENV: Intente colocolar en el listen la variale PORT, pero cuando lo hacia 
 //me tirabaun error diciendo que se estaba utilizando en otra parte duplicado el puerto 8080
-//const PORT = objConfigEnv.port;
+const PORT = objConfigEnv.port;
 
-const httpServer = app.listen(8080, () => {
+const httpServer = app.listen(PORT, () => {
   logger.info("LEYENDO PUERTO 8080");
-
+ 
 
 });
 

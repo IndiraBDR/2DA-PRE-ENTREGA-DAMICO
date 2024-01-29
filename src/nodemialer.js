@@ -10,29 +10,14 @@ const transporter = nodemailer.createTransport({
 
     auth:{
 
-
-        //`${objConfigEnv.nodemailer_user}`,
-      // `${objConfigEnv.nodemailer_password}`
-
-        user:"indiradamico22@gmail.com",
-        pass: "evusfdcxbsihxeme"
+        user:objConfigEnv.nodemailer_user,
+        pass:objConfigEnv.nodemailer_password
 
     }
 
 
 })
 
-/*
 
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com ',
-    port: 465,
-    auth: {
-      user: '<your@email.address>',
-      pass: '<yourP@55word>'
-    }
-  });
-
-*/
 
 export{transporter}
