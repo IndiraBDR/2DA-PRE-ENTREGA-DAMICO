@@ -134,34 +134,17 @@ async (req, res) => {
   const { email} = req.body
 
 
-
-
   try {
 
     await transporter.sendMail({
 
       from:  "INDIRA",
       to: email,
-      subject: "PROBANDO MAIL",
+      subject: "MAIL DE RECUPERACION DE CONTRASEÑA",
       html:
 
       `<button><a href="http://localhost:8080/api/views/restaurarPassword">RESTAURAR PASSWORD</a></button>`
-     
-   
-
-      /*
-      if (tokencito) {
-        `<button><a href="http://localhost:8080/api/views/restaurarPassword">RESTAURAR PASSWORD</a></button>`
-        
-      } else {
-
-        `
-    
-      <button><a href="http://localhost:8080/api/views/login">VENCIO TU LINK VUELVE A GENERAR ELMAIL</a></button>`
-        
-      }
-
-      */
+  
     
      })
      
@@ -169,8 +152,6 @@ async (req, res) => {
      res.cookie('tokencito', tokencito, { maxAge: 60000, httpOnly: true })
 
       //console.log("TOKENCITO", tokencito) 
-     
-  
      res.status(200).json({ message: "MAIL ENVIADO" });
   
    

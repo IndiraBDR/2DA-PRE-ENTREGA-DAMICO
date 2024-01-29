@@ -1,4 +1,4 @@
-import { findAllUserService, findUserByCartIdServ, updateUserServ} from "../services/users.service.js";
+import { findAllUserService, findUserByCartIdServ, updateUserServ,findByIdServ} from "../services/users.service.js";
 import { CustomError } from "../errors/error.generator.js";
 import { errorsMessages } from "../errors/errors.enum.js";
 
@@ -44,18 +44,21 @@ export const  updateUserController = async (req, res) => {
 
   const { idUser} = req.params;
 
+  const userById = await findByIdServ(idUser)
+
+  if (!userById) {
+    return CustomError.generateError(errorsMessages.USER_NOT_FOUND,404)
+  }
+
   if (req.body.roles === 'admin') {
 
-    return res.status(404).json({ message: "EL ROL NO SE PUEDE CAMBIAR A ADMIN" });
+    return res.status(403).json({ message: "EL ROL NO SE PUEDE CAMBIAR A ADMIN" });
     
   }
 
   try {
-    const updatedUser = await updateUserServ(idUser, req.body);
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
+   
+    await updateUserServ(idUser, req.body);
 
     res.status(200).json({ message: "User update" });
   } catch (error) {

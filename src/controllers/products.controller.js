@@ -2,6 +2,8 @@ import { findAllServ, findByIdServ, createOneServ, updateOneServ, deleteOneServ 
 import { productMock } from "../mock/productMock.js";
 import { CustomError } from "../errors/error.generator.js";
 import { errorsMessages } from "../errors/errors.enum.js";
+import { logger } from "../logger.js"
+
 
 export const findAllController = async (req, res) => {
 
@@ -44,66 +46,41 @@ export const findByIdController = async (req, res) => {
 
 
 export const createOneController = async (req, res) => {
+  //console.log("ACA", req.user);
+  //INFO DEL USURIO LOGEADO
 
-  //console.log("ACAAAA", req.user);
-  //LO RECIBE CORRECTAMENTE req.user.email
   try {
-
 
     let createdProduct;
 
     if (req.user) {
 
-    
-
       if (req.user.roles === "premium") {
 
         createdProduct = await createOneServ({ ...req.body, owner: req.user.email });
-        console.log("OWNEEEER", createdProduct.owner);
+        logger.info(`OWNER:${createdProduct.owner}`);
         return res.status(200).json({ message: "product creado", product: createdProduct });
+
 
       }else{
 
         if (!req.body.owner) {
 
-          console.log('HOLAAAAAAAAAA', req.body.owner);
-  
+          logger.info(`OWNER POR BODY: ${req.body.owner}`);
           createdProduct = await createOneServ({ ...req.body, owner: "admin" });
           return res.status(200).json({ message: "product creado", product: createdProduct });
   
         } 
 
-
       }
 
-
-
-
     }
-    
-   
-
 
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -129,80 +106,62 @@ export const deleteOneController = async (req, res) => {
 
   const { pid } = req.params;
 
-  let deletedProduct;
+  let productoFiltrado = await findByIdServ(pid);
 
-  ///NUEVOOO
-
+  try{
 
     if (req.user.roles === "premium") {
 
-      try {
-  
-        console.log(req.user.roles);
-  
-        //DATOS DE LOGEO QUE VIENE EN EL TOKEN = req.user.email
-  
-        let productoFiltrado = await findByIdServ(pid);
+      //DATOS DE MAIL LOGEADO QUE VIENE EN EL TOKEN = req.user.email
+
+        logger.info(`ROL LOGUEADO: ${req.user.roles}`);
+      
+
+        if (!productoFiltrado) {
+          return CustomError.generateError(errorsMessages.PRODUCT_NOT_FOUND, 404)
+        }
   
         if (productoFiltrado.owner === req.user.email) {
   
-          console.log('SI LO CREO USTED, ELIMINADO');
+          logger.info('EL USURIO SI CREO ESTE PRODUCTO, PUEDE ELIMINARLO');
   
           await deleteOneServ(pid);
-  
+
           return res.status(200).json({ message: "User delete" })
   
         } else {
   
-          //REVISAR EL CODIGO DE ESTE ERROR SI ESTA CORRCETO
+          //REVISAR EL CODIGO DE ESTE ERROR SI ESTA CORRCETO--REVISADO LISTO
   
-          console.log('ESTE PRODUCTO NO LO CREO USTED, NO LO PUEDE ELIMINAR');
+          logger.info('ESTE PRODUCTO NO LO CREO EL USURIO, NO LO PUEDE ELIMINAR');
   
-          return res.status(400).json({ message: "NO LO PUEDE ELIMINAR,ESTE PRODUCTO NO LO CREO USTED, NO LO PUEDE ELIMINAR" })
+          return res.status(403).json({ message: "NO LO PUEDE ELIMINAR,ESTE PRODUCTO NO LO CREO USTED" })
   
         }
   
   
-      } catch (error) {
-        res.status(500).json({ message: error.message });
-      }
   
     }
-
-
 
 
     if (req.user.roles === "admin") {
 
-      try {
-        deletedProduct = await deleteOneServ(pid);
-  
-        if (!deletedProduct) {
-          // return res.status(404).json({ message: "product not found" });
-          return CustomError.generateError(errorsMessages.PRODUCT_NOT_FOUND, 404)
-        }
+      if (!productoFiltrado) {
+        return CustomError.generateError(errorsMessages.PRODUCT_NOT_FOUND, 404)
+      }
+
+        await deleteOneServ(pid);
   
         res.status(200).json({ message: "User delete" });
-      } catch (error) {
-        res.status(500).json({ message: error.message });
-      }
+     
     }
   
-  
 
- 
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 
-  //NUEVOOOO
 
-
-  //VIEJO
- 
-
-  /*
-    /////
-   
-  
-    */
 }
 
 

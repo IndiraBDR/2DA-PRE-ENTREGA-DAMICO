@@ -48,11 +48,7 @@ const productsSchema = new Schema({
     owner:{
 
         type: String,
-        
-/*
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'Users'
-      */  
+         
     }
 
 });

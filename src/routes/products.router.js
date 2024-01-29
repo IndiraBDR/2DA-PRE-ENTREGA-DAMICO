@@ -98,15 +98,8 @@ routerProduct.put("/:pid", async (req, res) => {
 routerProduct.get("/", findAllController);
 routerProduct.get("/:pid", findByIdController);
 routerProduct.post("/" , authMiddleware(["admin","premium"]), createOneController );
-
-
-//,authMiddleware(["admin"])
-
 routerProduct.put("/:pid",authMiddleware(["admin"]) , updateOneController);
 routerProduct.delete("/:pid" , authMiddleware(["admin","premium"]) , deleteOneController);
-
-//
-
 routerProduct.get('/mock/mockingproducts', productMocksController);
 
 
