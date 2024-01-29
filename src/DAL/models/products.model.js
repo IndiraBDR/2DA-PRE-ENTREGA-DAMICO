@@ -1,5 +1,6 @@
 import { Schema, model} from "mongoose";
 import mongoosePaginate from 'mongoose-paginate-v2'
+import { mongoose } from "mongoose";
 
 const productsSchema = new Schema({
 
@@ -41,6 +42,17 @@ const productsSchema = new Schema({
 
         type: String,
 
+    },
+
+    //NUEVO OWNER
+    owner:{
+
+        type: String,
+        
+/*
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Users'
+      */  
     }
 
 });

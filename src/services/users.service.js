@@ -41,4 +41,15 @@ export const createOneServ =(obj)=> {
 
 
 
+//NUEVO 3ER PRAC I.
+
+export const  updateUserServ =(id, obj)=>  {
+
+    const updatedUser =  userManagerDB.updateOne(id, obj);
+    return updatedUser
+
+};
+
+
+
 export{ findAllUserService, findByEmailServ, findUserByCartIdServ }

@@ -35,10 +35,10 @@ const usersSchema = new Schema({
 
     roles:{
         type:String,
-        enum:["user" , "admin"],
+        enum:["user" , "admin", "premium"],
         default: "user"
     },
-
+   
     cart:{
 
         type: mongoose.SchemaTypes.ObjectId,

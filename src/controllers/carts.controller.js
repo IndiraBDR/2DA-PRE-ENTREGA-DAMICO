@@ -3,6 +3,12 @@ import { findByIdServ } from "../services/products.service.js";
 import { CustomError } from "../errors/error.generator.js";
 import { errorsMessages } from "../errors/errors.enum.js";
 
+//3ER PARCT INT
+import {  userManagerDB } from "../DAL/dao/mongoDao/users.dao.mongo.js";
+
+
+//
+
 export const findAllCartController = async (req, res) => {
 
   try {
@@ -62,20 +68,52 @@ export const addProductToCartController = async (req, res) => {
 
   try {
 
-    const cart = await findCartByIdServ(idCart)
+    if (req.user) {
+
+
+      //NUEVOO 3ER PRACT INT DEBE IR EN SERVICE
+
+  if (req.user.roles === "premium") {
+
+    let productoFiltrado = await findByIdServ(idProduct);
+
+    if (productoFiltrado.owner === req.user.email){
+
+      return res.status(400).json({ message: "YAAA ES SUYO, NO SE PUEDE AGREGAR" })
   
-    if (!cart) {
-
-     return CustomError.generateError(errorsMessages.CART_NOT_FOUND,404)
-
     }
-    const updatedCart = await addProductToCartServ(idCart, idProduct);
 
-    res.status(200).json({ message: "PRODUCTO AGREGADO", product: updatedCart });
+  }
+  ///NUEVOOO
 
+
+      const cart = await findCartByIdServ(idCart)
+    
+      if (!cart) {
+  
+       return CustomError.generateError(errorsMessages.CART_NOT_FOUND,404)
+  
+      }
+      const updatedCart = await addProductToCartServ(idCart, idProduct);
+  
+      res.status(200).json({ message: "PRODUCTO AGREGADO", product: updatedCart });
+  
+
+    
+  }else{
+    res.status(400).json({ message: "NO HAY USURIO LOGEADO" });
+    //REVISAR CODGI DEL ERROR
+
+  }
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+
+  
+
+
+ 
 }
 
 

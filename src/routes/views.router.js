@@ -143,7 +143,21 @@ routerViews.get("/mailAviso", async (req, res) => {
 
 routerViews.get("/restaurarPassword", async (req, res) => {
 
+ 
+ if (!req.cookies.tokencito) {
+
+
+  return res.redirect('/api/views/mailAviso')
+
+ 
+ } else {
+
   res.render("restaurarPassword")
+  
+ }
+  console.log("VIEWS TOKENCITOO DOS::::",req.cookies.tokencito);
+
+ 
 
 
 });

@@ -15,6 +15,7 @@ const SECRETJWT = objConfigEnv.secret_jwt;
 
 passport.use("signup", new LocalStrategy({ passReqToCallback: true, usernameField: "email" }, async (req, email, password, done) => {
 
+    
     const { name, last_name } = req.body
 
     if (!email || !password || !name || !last_name) {
@@ -27,7 +28,7 @@ passport.use("signup", new LocalStrategy({ passReqToCallback: true, usernameFiel
 
         const hashedPassword = await hashData(password);
 
-        let correoAdmin = "administradorCA@coder.com";
+        let correoAdmin = "administradorCAA@coder.com";
 
         const createdCart = await cartManagerBD.createOne()
 
@@ -54,6 +55,7 @@ passport.use("signup", new LocalStrategy({ passReqToCallback: true, usernameFiel
 
 
 passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
+
     if (!email || !password) {
 
         return done(null, false, { message: "All fields are required" })
@@ -75,6 +77,8 @@ passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email
             return done(null, false, { message: "Incorrect email or password" })
 
         }
+
+        //console.log( user);
 
         done(null, user)
 

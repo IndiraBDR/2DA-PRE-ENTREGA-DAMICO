@@ -2,6 +2,8 @@ import { Router } from "express";
 import { generateTokenController, userReqController,restaurarPasswordController } from "../controllers/sessions.controller.js";
 import passport from "passport";
 
+import { generateToken } from "../utils.js";
+
 import { transporter } from "../nodemialer.js";
 
 const routerSessions = Router();
@@ -131,6 +133,9 @@ async (req, res) => {
 
   const { email} = req.body
 
+
+
+
   try {
 
     await transporter.sendMail({
@@ -138,18 +143,37 @@ async (req, res) => {
       from:  "INDIRA",
       to: email,
       subject: "PROBANDO MAIL",
-      html:`
-      
-      
-      <button><a href="http://localhost:8080/api/views/restaurarPassword">RESTAURAR PASSWORD</a></button>
-      `
+      html:
+
+      `<button><a href="http://localhost:8080/api/views/restaurarPassword">RESTAURAR PASSWORD</a></button>`
+     
+   
+
+      /*
+      if (tokencito) {
+        `<button><a href="http://localhost:8080/api/views/restaurarPassword">RESTAURAR PASSWORD</a></button>`
+        
+      } else {
+
+        `
     
+      <button><a href="http://localhost:8080/api/views/login">VENCIO TU LINK VUELVE A GENERAR ELMAIL</a></button>`
+        
+      }
+
+      */
     
      })
+     
+     const tokencito = generateToken({email})    
+     res.cookie('tokencito', tokencito, { maxAge: 60000, httpOnly: true })
+
+      //console.log("TOKENCITO", tokencito) 
+     
   
      res.status(200).json({ message: "MAIL ENVIADO" });
   
-  
+   
     
   } catch (error) {
     res.status(500).json({ message: error.message });

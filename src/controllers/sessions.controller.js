@@ -10,15 +10,18 @@ import  {transporter } from "../nodemialer.js";
 
 const generateTokenController = (req, res) => {
 
-  const { name, last_name, email } = req.user
+ // console.log("PROBANDOOOO", req.user);
+
+  const { name, last_name, email,roles } = req.user
 
   const token = generateToken({
     name,
     last_name,
-    email
+    email,
+    roles
   });
 
-  console.log(token);
+ console.log(token);
 
   res.cookie("token", token, { maxAge: 60000, httpOnly: true })
 
@@ -43,6 +46,7 @@ const userReqController = (req, res) => {
 
 const restaurarPasswordController = async (req, res) => {
 
+ 
   const { email, newPassword } = req.body
 
   if (!email || !newPassword) {
@@ -86,7 +90,7 @@ const restaurarPasswordController = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-
+ 
   
 
 }
