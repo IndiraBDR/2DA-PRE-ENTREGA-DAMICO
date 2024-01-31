@@ -149,7 +149,7 @@ async (req, res) => {
      })
      
      const tokencito = generateToken({email})    
-     res.cookie('tokencito', tokencito, { maxAge: 60000, httpOnly: true })
+     res.cookie('tokencito', tokencito, { maxAge: 3600000, httpOnly: true })
 
       //console.log("TOKENCITO", tokencito) 
      res.status(200).json({ message: "MAIL ENVIADO" });
