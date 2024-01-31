@@ -143,7 +143,13 @@ async (req, res) => {
       subject: "MAIL DE RECUPERACION DE CONTRASEÑA",
       html:
 
-      `<button><a href="http://localhost:8080/api/views/restaurarPassword">RESTAURAR PASSWORD</a></button>`
+      `
+      <button><a href="http://localhost:8080/api/views/restaurarPassword" target="_blank">RESTAURAR PASSWORD</a></button>
+      
+      <p>Si el boton gno funciona, copia y pega la siguiente URL en tu navegador:</p>
+      <p>http://localhost:8080/api/views/restaurarPassword</p>
+      
+      `
   
     
      })
