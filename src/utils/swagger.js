@@ -16,7 +16,7 @@ const swaggerOptions = {
         },
     },
    
-     apis: [`${__dirname}/docs/*.yaml`],
+    apis: [`${__dirname}/docs/*.yaml`],
    //apis: [join(__dirname, "docs", "*.yaml")],
 };
 

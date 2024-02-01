@@ -75,6 +75,7 @@ const httpServer = app.listen(PORT, () => {
   logger.info("LEYENDO PUERTO 8080");
  
 
+
 });
 
 console.log(objConfigEnv.secret_jwt);

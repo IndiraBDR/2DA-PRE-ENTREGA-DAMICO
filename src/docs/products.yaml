@@ -12,7 +12,7 @@ paths:
 
 
   
-      post:
+    post:
       summary: Created a new product
       tags:
         - Products
@@ -191,7 +191,6 @@ components:
           type: string
         stock:
           type: number
-  
         category:
           type: string
         thumbnail:
