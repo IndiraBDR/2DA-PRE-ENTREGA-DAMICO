@@ -1,4 +1,4 @@
-import { hashData, compareData, generateToken } from "../utils.js";
+import { hashData, compareData, generateToken } from "../utils/utils.js";
 import { findByEmailServ } from "../services/users.service.js";
 import UsersResponseDto from "../DAL/dtos/users-response.dto.js";
 import { CustomError } from "../errors/error.generator.js";

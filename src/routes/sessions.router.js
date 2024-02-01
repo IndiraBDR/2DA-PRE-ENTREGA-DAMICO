@@ -2,7 +2,7 @@ import { Router } from "express";
 import { generateTokenController, userReqController,restaurarPasswordController } from "../controllers/sessions.controller.js";
 import passport from "passport";
 
-import { generateToken } from "../utils.js";
+import { generateToken } from "../utils/utils.js";
 
 import { transporter } from "../nodemialer.js";
 

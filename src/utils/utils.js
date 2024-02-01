@@ -1,10 +1,12 @@
-import { dirname } from "path";
+import { dirname,join } from "path";
 import { fileURLToPath } from "url";
-import { objConfigEnv } from "./config/config.js";
+import { objConfigEnv } from "../config/config.js";
 import  bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 
-const __dirname= dirname(fileURLToPath(import.meta.url))
+
+const _filename=fileURLToPath(import.meta.url);
+const __dirname= join(dirname(_filename),"..")
 
 
 const SECRETJWT = objConfigEnv.secret_jwt;

@@ -3,7 +3,7 @@ import { UsersManagerDB } from "./DAL/dao/mongoDao/users.dao.mongo.js"
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GitHubStrategy } from "passport-github2";
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
-import { hashData, compareData } from "./utils.js";
+import { hashData, compareData } from "./utils/utils.js";
 import { objConfigEnv } from "./config/config.js";
 import { cartManagerBD } from "./DAL/dao/mongoDao/carts.dao.mongo.js";
 import { UsersRequestDto } from "./DAL/dtos/users-request.dto.js";

@@ -4,7 +4,7 @@ import { routerCart } from "./routes/cart.router.js";
 import { routerSessions  } from "./routes/sessions.router.js";
 import { routerUsers } from "./routes/users.router.js";
 import { engine } from "express-handlebars";
-import { __dirname } from "./utils.js";
+import { __dirname } from "./utils/utils.js";
 import { routerViews } from "./routes/views.router.js";
 import { Server } from "socket.io";
 import { ProductManager } from "./DAL/dao/fileSistDao/products.dao.fileS.js";
@@ -21,6 +21,9 @@ import passport from "passport";
 
 
 import { logger } from "../src/logger.js"
+
+import { swaggerSetup } from "../src/utils/swagger.js";
+import swaggerUi from 'swagger-ui-express'
 
 
 const productManager = new ProductManager();
@@ -57,6 +60,7 @@ app.use("/api/carts", routerCart);
 app.use("/api/views", routerViews);
 app.use("/api/sessions", routerSessions);
 app.use("/api/users", routerUsers);
+app.use("/api/docs",swaggerUi.serve, swaggerUi.setup(swaggerSetup))
 
 
 app.use(errorMiddleware);
