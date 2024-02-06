@@ -9,16 +9,23 @@ class ProductManagerDB  extends BasicManagerDB{
     }
 
     //http://localhost:8080/api/products?page=1&limit=10&sort=-1&category=AAA
+
+    
     async findAll(obj) {
 
-        const { limit = 10, page = 1, order = 0, ...query } = obj;
+        let { limit = 10, page = 1, sort = 0, ...query } = obj;
 
-        let sort
-        if (+order === 1) {
+        console.log("ACA",sort);
+       //  sort = 0 --> valor por defecto, indica ningun tipo de orden
+       //-nombredelapropiedad,  lo ordena descendentemente con base en esa propiedad, 
+       // nombredelapropiedad sin el signo menos,  lo ordena ascendentemente con base en esa propiedad
 
+        if (+sort === 1) {
+
+        
             sort = 'price'
 
-        } else if (+order === -1) {
+        } else if (+sort === -1) {
 
             sort = '-price'
         }
@@ -27,8 +34,10 @@ class ProductManagerDB  extends BasicManagerDB{
             page: page,
             limit: limit,
             sort
+          
         }
 
+       
         const response = await productsModel.paginate(query, options);
 
         const results = {

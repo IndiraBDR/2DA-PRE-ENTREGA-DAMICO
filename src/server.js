@@ -73,8 +73,6 @@ const PORT = objConfigEnv.port;
 
 const httpServer = app.listen(PORT, () => {
   logger.info("LEYENDO PUERTO 8080");
- 
-
 
 });
 

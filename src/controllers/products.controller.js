@@ -64,6 +64,8 @@ export const createOneController = async (req, res) => {
 
       }else{
 
+     
+        
         if (!req.body.owner) {
 
           logger.info(`OWNER POR BODY: ${req.body.owner}`);
@@ -75,7 +77,9 @@ export const createOneController = async (req, res) => {
       }
 
     }
+    
 
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
