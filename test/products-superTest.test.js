@@ -297,7 +297,7 @@ describe('DELETE/api/products/:pid', function () {
         console.log(responseDelete._body);
 
 
-        expect(responseDelete.statusCode).to.be.equals(200);
+       expect(responseDelete.statusCode).to.be.equals(200);
     }
 
     )
@@ -306,4 +306,6 @@ describe('DELETE/api/products/:pid', function () {
 }
 
 )
+
+
 
