@@ -64,6 +64,7 @@ passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email
 
     try {
         const user = await usersManagerDB.findByEmail(email);
+       
 
         if (!user) {
             return done(null, false, { message: "Incorrect email or password" })
@@ -93,9 +94,13 @@ passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email
 
 const fromCookies = (req) => {
 
+   
+
     if (!req.cookies.token) {
 
-        return console.log("ERROR");
+        console.log('ACA REQ',req.cookies);
+
+        return console.log("ERROR ACAA EN PASSPORT.JS");
 
     }
 
@@ -113,6 +118,8 @@ passport.use("current", new JWTStrategy(
         secretOrKey: SECRETJWT,
 
     },
+
+
 
     (jwt_payload, done) => {
 

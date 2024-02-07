@@ -25,6 +25,8 @@ const generateTokenController = (req, res) => {
 
   res.cookie("token", token, { maxAge: 60000, httpOnly: true })
 
+  
+
   return res.redirect("/api/sessions/current")
   //return res.redirect("/api/products")
 
@@ -40,6 +42,8 @@ const userReqController = (req, res) => {
   const newUserDtoRes = new UsersResponseDto(user)
 
   res.json({ message: newUserDtoRes })
+
+ //return res.send({status:"success", payload:user})
 
 }
 

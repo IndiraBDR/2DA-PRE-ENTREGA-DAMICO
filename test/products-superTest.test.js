@@ -113,6 +113,9 @@ describe('GET/api/products/:pid', function() {
 )
 */
 
+
+/* CREATED PRODUCT FUNCIONANDOOOO
+
 let cookieData
 describe('POST/api/products', function () {
 
@@ -120,10 +123,12 @@ describe('POST/api/products', function () {
 
 
         let user = {
-    
-            email: 'premium2@gmail.com',
-            password: '1234'
+
             
+            email: "premium2@gmail.com",
+            password: "1234"
+           
+          
             }
     
          const response = await requester.post('/api/sessions/login').send(user);
@@ -133,50 +138,59 @@ describe('POST/api/products', function () {
             value: cookie.split("=")[1].split(";")[0]
         }
    
-      // console.log('ACADATA',cookieData);
+     //  console.log('ACADATA',cookieData);
 
      // console.log(response.headers);
        
       });
 
    
-
-    // CREATED PRODUCT
+     
+    
        it("should created product??", async function () {
    
            const objBody={
    
-                title: 'titulo83',
+                title: 'titulo88',
                
-               description: 'descripcion83',
+               description: 'descripcion88',
                
                price: 40,
                
-               code:'abc1283',
+               code:'abc1288',
                
                stock: 4,
                
                category: 'BBB',
                
-               thumbnails: 'xxxx83'
+               thumbnails: 'xxxx87'
                
            }
-           const response = await requester.post("/api/products").
+
+           //const response1=  await requester.get("/api/sessions/current").set('Cookie',[`${cookieData.name}=${cookieData.value}`])
+// console.log(response1);
+
+           const response = await requester.post("/api/products").set('Cookie',[`${cookieData.name}=${cookieData.value}`]).send(objBody)
+
+         
    
-           //set('Cookie',[`${cookieData.name}=${cookieData.value}`])
+           
 
            console.log(response);
            
            const newProductTest = response._body.product
    
-          // console.log("NUEVOO PRODUCTO",newProductTest);
+           console.log("NUEVOO PRODUCTO",newProductTest);
    
    
-           //expect(newProductTest).to.be.an('object')
-           //expect(response.statusCode).to.be.equals(200);
+           expect(newProductTest).to.be.an('object')
+           expect(response.statusCode).to.be.equals(200);
        }
        )
-   
+
+    
+
+ 
 
 })
 
@@ -184,7 +198,7 @@ describe('POST/api/products', function () {
 
 
 
-
+/*
 
 
 
@@ -219,3 +233,77 @@ describe('PUT/api/products/:pid', function() {
 )
 
 */
+
+
+
+//TEST PRODUCT DELETE
+
+let cookieData
+
+describe('DELETE/api/products/:pid', function () {
+
+    before(async function () {
+
+
+        let user = {
+
+
+            email: "premium2@gmail.com",
+            password: "1234"
+
+
+        }
+
+        const response = await requester.post('/api/sessions/login').send(user);
+        const cookie = response.headers["set-cookie"][0];
+        cookieData = {
+            name: cookie.split("=")[0],
+            value: cookie.split("=")[1].split(";")[0]
+        }
+
+
+
+    });
+
+
+    it("should return an object", async function () {
+
+        const objBody = {
+
+            title: 'titulo85POST',
+
+            description: 'descripcion85',
+
+            price: 40,
+
+            code: 'abc12845',
+
+            stock: 4,
+
+            category: 'BBB',
+
+            thumbnails: 'xxxx85'
+
+        }
+
+        const responseCreated = await requester.post("/api/products").set('Cookie', [`${cookieData.name}=${cookieData.value}`]).send(objBody)
+
+        console.log('CREATED', responseCreated);
+
+        const productId = responseCreated._body.product._id
+
+        const responseDelete = await requester.delete(`/api/products/${productId}`).set('Cookie', [`${cookieData.name}=${cookieData.value}`])
+
+        console.log(responseDelete._body);
+
+
+        expect(responseDelete.statusCode).to.be.equals(200);
+    }
+
+    )
+    //probar borrar el producto que no creo buscando el producto como en el find by id
+
+}
+
+)
+

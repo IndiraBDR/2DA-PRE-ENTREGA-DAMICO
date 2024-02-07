@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { findAllController, findByIdController, createOneController,updateOneController,deleteOneController ,productMocksController } from "../controllers/products.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
+import  passport  from "passport";
 const routerProduct = Router();
 
 
@@ -97,11 +98,12 @@ routerProduct.put("/:pid", async (req, res) => {
 
 routerProduct.get("/", findAllController);
 routerProduct.get("/:pid", findByIdController);
-routerProduct.post("/" , createOneController );
+routerProduct.post("/",passport.authenticate("current",{session:false}), authMiddleware(["admin","premium"]), createOneController );
 
-//, authMiddleware(["admin","premium"])
+
+//,passport.authenticate("current",{session:false})
 routerProduct.put("/:pid",authMiddleware(["admin"]) , updateOneController);
-routerProduct.delete("/:pid" , authMiddleware(["admin","premium"]) , deleteOneController);
+routerProduct.delete("/:pid",passport.authenticate("current",{session:false}) , authMiddleware(["admin","premium"]) , deleteOneController);
 routerProduct.get('/mock/mockingproducts', productMocksController);
 
 

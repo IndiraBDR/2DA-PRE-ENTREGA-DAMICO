@@ -54,6 +54,8 @@ export const authMiddleware = (roles) => {
 
         const user = req.user;
 
+        console.log(user);
+
       
         if (!user) {
 
