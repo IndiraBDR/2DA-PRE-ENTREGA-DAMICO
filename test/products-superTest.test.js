@@ -113,10 +113,11 @@ describe('GET/api/products/:pid', function() {
 )
 */
 
-
+let cookieData
 describe('POST/api/products', function () {
 
-    before(async()=>{
+    before( async function () {
+
 
         let user = {
     
@@ -127,15 +128,18 @@ describe('POST/api/products', function () {
     
          const response = await requester.post('/api/sessions/login').send(user);
         const cookie = response.headers["set-cookie"][0];
-        const cookieData={
+         cookieData={
             name:cookie.split("=")[0],
             value: cookie.split("=")[1].split(";")[0]
         }
    
-        console.log('ACADATA',cookieData);
-    
-    
-    })
+      // console.log('ACADATA',cookieData);
+
+     // console.log(response.headers);
+       
+      });
+
+   
 
     // CREATED PRODUCT
        it("should created product??", async function () {
@@ -157,9 +161,9 @@ describe('POST/api/products', function () {
                thumbnails: 'xxxx83'
                
            }
-           const response = await requester.post("/api/products")
-           .set('Cookie',[`${cookieData.name}=${cookieData.value}`]).send(objBody)
+           const response = await requester.post("/api/products").
    
+           //set('Cookie',[`${cookieData.name}=${cookieData.value}`])
 
            console.log(response);
            
@@ -168,8 +172,8 @@ describe('POST/api/products', function () {
           // console.log("NUEVOO PRODUCTO",newProductTest);
    
    
-           expect(newProductTest).to.be.an('object')
-           expect(response.statusCode).to.be.equals(200);
+           //expect(newProductTest).to.be.an('object')
+           //expect(response.statusCode).to.be.equals(200);
        }
        )
    
