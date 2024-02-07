@@ -3,6 +3,7 @@ import { expect } from "chai";
 import { productManagerDB } from "../src/DAL/dao/mongoDao/products.dao.mongo.js";
 import "../src/db/configDB.js"
 
+
 //import "./db-test.js"
 
 //"test": "mocha -t 10000 test/products-superTest.test.js"
@@ -13,30 +14,45 @@ import "../src/db/configDB.js"
 const requester = supertest("http://localhost:8080")
 
 
-/* BEFOREE
 
- before(async()=>{
 
-     let user = {
- 
-         email: 'premium2@gmail.com',
-         password: '1234'
-         
+
+
+
+//.set('Cookie',[`${cookieData.name}=${cookieData.value}`])
+
+
+
+/* LOGIN
+
+
+    it("should loged", async function () {
+
+
+        const response = await requester.post('/api/sessions/login').send({
+
+            email: "indiradamico22@gmail.com",
+            password: "1234"
+
+        });
+
+       
+
+    const cookie = response.headers["set-cookie"][0];
+
+   // console.log(cookie);
+
+         const cookieData={
+             name:cookie.split("=")[0],
+            value: cookie.split("=")[1].split(";")[0]
          }
- 
-     const response= await requester.post('api/user/login').send(user);
-     const cookie = response.headers["set-cookie"][0];
-     const cookieData={
-         name:cookie.split("=")[0],
-         value: cookie.split("=")[1].split(";")[0]
-     }
- 
- 
- })
 
+        console.log('ACADATA',cookieData);
+         expect(response.statusCode).to.be.equals(200);
 
- .set('Cookie',[`${cookieData.name}=${cookieData.value}`])
+    })
 */
+
 
 
 
@@ -98,64 +114,65 @@ describe('GET/api/products/:pid', function() {
 */
 
 
-describe('POST/api/session/login', function () {
+describe('POST/api/products', function () {
 
-    it("should loged", async function () {
+    before(async()=>{
 
-
-        const response = await requester.post('api/sessions/login').send({
-
-            email: "indiradamico22@gmail.com",
-            password: "1234"
-
-        });
-
-        console.log('REEEEES', response);
-
-        //const cookie = response.headers["set-cookie"][0];
-
-        // const cookieData={
-        //     name:cookie.split("=")[0],
-        //    value: cookie.split("=")[1].split(";")[0]
-        // }
-
-         expect(response.statusCode).to.be.equals(200);
-
+        let user = {
+    
+            email: 'premium2@gmail.com',
+            password: '1234'
+            
+            }
+    
+         const response = await requester.post('/api/sessions/login').send(user);
+        const cookie = response.headers["set-cookie"][0];
+        const cookieData={
+            name:cookie.split("=")[0],
+            value: cookie.split("=")[1].split(";")[0]
+        }
+   
+        console.log('ACADATA',cookieData);
+    
+    
     })
 
-    /* CREATED PRODUCT
+    // CREATED PRODUCT
        it("should created product??", async function () {
    
            const objBody={
    
-                title: 'titulo82',
+                title: 'titulo83',
                
-               description: 'descripcion82',
+               description: 'descripcion83',
                
                price: 40,
                
-               code:'abc1282',
+               code:'abc1283',
                
                stock: 4,
                
                category: 'BBB',
                
-               thumbnails: 'xxxx82'
+               thumbnails: 'xxxx83'
                
            }
-           const response = await requester.post("/api/products").set('Cookie',[`${cookieData.name}=${cookieData.value}`]).send(objBody)
+           const response = await requester.post("/api/products")
+           .set('Cookie',[`${cookieData.name}=${cookieData.value}`]).send(objBody)
    
+
+           console.log(response);
            
            const newProductTest = response._body.product
    
-         //  console.log("NUEVOO PRODUCTO",newProductTest);
+          // console.log("NUEVOO PRODUCTO",newProductTest);
    
    
            expect(newProductTest).to.be.an('object')
            expect(response.statusCode).to.be.equals(200);
        }
        )
-   */
+   
 
 })
 
