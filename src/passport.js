@@ -8,6 +8,9 @@ import { objConfigEnv } from "./config/config.js";
 import { cartManagerBD } from "./DAL/dao/mongoDao/carts.dao.mongo.js";
 import { UsersRequestDto } from "./DAL/dtos/users-request.dto.js";
 
+import { CustomError } from "./errors/error.generator.js";
+import { errorsMessages } from "./errors/errors.enum.js";
+
 const usersManagerDB = new UsersManagerDB();
 
 //ACA CAMBIE UNA VARIABLE ENV
@@ -93,16 +96,23 @@ passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email
 //NUEVO JWT
 
 const fromCookies = (req) => {
+   
 
    
 
     if (!req.cookies.token) {
 
-        console.log('ACA REQ',req.cookies);
+       // console.log('ACA REQ',req.cookies);
 
-        return console.log("ERROR ACAA EN PASSPORT.JS");
+     console.log("ERROR ACA EN PASSPORT.JS"); 
+
+     return CustomError.generateError(errorsMessages.USER_NOT_LOGGED_IN, 401)
+
+      
 
     }
+
+   
 
     return req.cookies.token
 

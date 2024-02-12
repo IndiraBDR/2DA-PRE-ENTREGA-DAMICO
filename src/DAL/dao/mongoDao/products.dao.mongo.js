@@ -15,7 +15,7 @@ class ProductManagerDB  extends BasicManagerDB{
 
         let { limit = 10, page = 1, sort = 0, ...query } = obj;
 
-        console.log("ACA",sort);
+       // console.log("ACA",sort);
        //  sort = 0 --> valor por defecto, indica ningun tipo de orden
        //-nombredelapropiedad,  lo ordena descendentemente con base en esa propiedad, 
        // nombredelapropiedad sin el signo menos,  lo ordena ascendentemente con base en esa propiedad

@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/server.js",
-    "test":  "mocha -t 10000 test/products-superTest.test.js" 
+    "test": "mocha -t 10000 test/*.test.js"
   
   },
   "keywords": [],

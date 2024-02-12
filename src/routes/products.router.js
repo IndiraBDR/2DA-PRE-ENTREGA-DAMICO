@@ -102,7 +102,7 @@ routerProduct.post("/",passport.authenticate("current",{session:false}), authMid
 
 
 //,passport.authenticate("current",{session:false})
-routerProduct.put("/:pid",authMiddleware(["admin"]) , updateOneController);
+routerProduct.put("/:pid",passport.authenticate("current",{session:false}),authMiddleware(["admin","premium"]) , updateOneController);
 routerProduct.delete("/:pid",passport.authenticate("current",{session:false}) , authMiddleware(["admin","premium"]) , deleteOneController);
 routerProduct.get('/mock/mockingproducts', productMocksController);
 
