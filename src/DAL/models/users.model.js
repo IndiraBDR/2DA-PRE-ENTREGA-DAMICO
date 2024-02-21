@@ -55,6 +55,32 @@ const usersSchema = new Schema({
         
     },
 
+
+    documents: {
+
+        type: [
+            {
+                name:String,
+                reference:String
+            }
+
+        ],
+        default:[],
+        
+    },
+
+    status:{
+        type:String,
+        enum:["loaded-id" , "loaded-bank", "loaded-address","completed-documents","documents-are-missing",'loaded-id-address'],
+        default: "documents-are-missing"
+    },
+
+    last_connection: {
+        type: Date,
+        required: true
+    },
+
+
     
 });
 

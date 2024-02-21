@@ -1,3 +1,4 @@
+
 import { userManagerDB } from "../DAL/dao/mongoDao/users.dao.mongo.js";
 
 
@@ -49,6 +50,39 @@ export const  updateUserServ =(id, obj)=>  {
     return updatedUser
 
 };
+
+
+export const  saveUserDocumentsServ = async ({id,dni,address,bank}) => {
+
+    const obj={
+
+        documents:[
+
+            ...(dni?[{
+                name:"dni",
+                reference: dni[0].path
+            }]:[]),
+
+            ...(address?[{
+                name:"address",
+                reference: address[0].path
+            }]:[]),
+
+            ...(bank?[{
+                name:"bank",
+                reference: bank[0].path
+            }]:[]),
+
+
+
+        ]
+    }
+
+
+    const saveUserDocuments =  userManagerDB.updateOne(id, obj);
+    return saveUserDocuments
+
+}
 
 
 

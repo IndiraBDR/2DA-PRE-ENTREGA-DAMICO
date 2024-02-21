@@ -1,5 +1,5 @@
 import { hashData, compareData, generateToken } from "../utils/utils.js";
-import { findByEmailServ } from "../services/users.service.js";
+import { findByEmailServ,updateUserServ } from "../services/users.service.js";
 import UsersResponseDto from "../DAL/dtos/users-response.dto.js";
 import { CustomError } from "../errors/error.generator.js";
 import { errorsMessages } from "../errors/errors.enum.js";
@@ -10,25 +10,33 @@ import  {transporter } from "../nodemialer.js";
 
 const generateTokenController = (req, res) => {
 
- // console.log("PROBANDOOOO", req.user);
+ 
 
-  const { name, last_name, email,roles } = req.user
+  const { name, last_name, email,roles,_id } = req.user
 
   const token = generateToken({
     name,
     last_name,
     email,
-    roles
+    roles,
+    _id
+
   });
 
- console.log(token);
+ console.log("TOKEN DE SESSION",token);
+
+ if (token) {
+
+  updateUserServ(_id, {last_connection:new Date()});
+  
+ }
 
   res.cookie("token", token, { maxAge: 60000, httpOnly: true })
 
   
 
-  return res.redirect("/api/sessions/current")
-  //return res.redirect("/api/products")
+  //return res.redirect("/api/sessions/current")
+  return res.redirect("/api/views/products")
 
 
 }

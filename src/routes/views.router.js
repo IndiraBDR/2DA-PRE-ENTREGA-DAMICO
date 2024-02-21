@@ -167,6 +167,8 @@ routerViews.get('/error', async (req, res) => {
 
 
 
+
+
 routerViews.get('/loggerTest', async (req, res) => {
 
   logger.error("PROBANDO LOGGER ERROR")
@@ -182,6 +184,24 @@ routerViews.get('/loggerTest', async (req, res) => {
 
 
 })
+
+
+routerViews.get('/documents', async (req, res) => {
+
+  console.log("COKIIEEEDOC",req.cookies.token);
+
+ if (!req.user) {
+
+  return res.status(400).json({ message: "NO HAY USURIO LOGEADO PARA DOC" });
+  
+ }
+
+  const id=  req.user._id
+ 
+  res.render("documents",{id})
+
+})
+
 
 export { routerViews };
 

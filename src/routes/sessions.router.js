@@ -5,6 +5,7 @@ import passport from "passport";
 import { generateToken } from "../utils/utils.js";
 
 import { transporter } from "../nodemialer.js";
+import { loggers } from "winston";
 
 const routerSessions = Router();
 
@@ -115,7 +116,13 @@ routerSessions.get("/callback", passport.authenticate('github', {
 
 routerSessions.get("/signout", async (req, res) => {
 
-  req.session.destroy(() => { res.redirect("/api/views/login") })
+ res.clearCookie("token")
+ updateUserServ(_id, {last_connection:new Date()});
+ res.redirect("/api/views/login")
+
+
+  //req.session.destroy(() => { res.redirect("/api/views/login") })
+
 
 });
 
