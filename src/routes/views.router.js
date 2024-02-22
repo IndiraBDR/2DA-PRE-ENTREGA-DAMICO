@@ -58,6 +58,8 @@ routerViews.get("/products", async (req, res) => {
 */
 routerViews.get("/products", async (req, res) => {
 
+  console.log('ACA PRODUCTS',req.user);
+
   if (!req.session.passport) {
 
     return res.redirect("/api/views/login")
@@ -104,7 +106,7 @@ routerViews.get("/carts/:cartId", async (req, res) => {
 
 routerViews.get("/login", async (req, res) => {
 
-
+console.log("acaaaaaa",req.session);
 
   if (req.session.user) {
 

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { generateTokenController, userReqController,restaurarPasswordController } from "../controllers/sessions.controller.js";
+import { updateUserServ } from "../services/users.service.js";
 import passport from "passport";
 
 import { generateToken } from "../utils/utils.js";
@@ -116,8 +117,11 @@ routerSessions.get("/callback", passport.authenticate('github', {
 
 routerSessions.get("/signout", async (req, res) => {
 
+const {_id} = req.user;
+
+
+  updateUserServ(_id, {last_connection:new Date()});
  res.clearCookie("token")
- updateUserServ(_id, {last_connection:new Date()});
  res.redirect("/api/views/login")
 
 
