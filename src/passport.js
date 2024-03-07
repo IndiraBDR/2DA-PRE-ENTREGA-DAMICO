@@ -10,6 +10,7 @@ import { UsersRequestDto } from "./DAL/dtos/users-request.dto.js";
 
 import { CustomError } from "./errors/error.generator.js";
 import { errorsMessages } from "./errors/errors.enum.js";
+import { findByEmailServ } from "./services/users.service.js";
 
 const usersManagerDB = new UsersManagerDB();
 
@@ -68,7 +69,6 @@ passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email
     try {
         const user = await usersManagerDB.findByEmail(email);
        
-
         if (!user) {
             return done(null, false, { message: "Incorrect email or password" })
         }
@@ -94,10 +94,8 @@ passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email
 
 
 //NUEVO JWT
-
+/*
 const fromCookies = (req) => {
-   
-
    
 
     if (!req.cookies.token) {
@@ -117,10 +115,17 @@ const fromCookies = (req) => {
     return req.cookies.token
 
 }
+*/
 
-
+const fromCookies = (req) => {
+    let token = null;
+    if (req?.cookies) {
+      token = req.cookies['token'];
+    }
+    return token;
+  };
+/*
 passport.use("current", new JWTStrategy(
-
 
     {
 
@@ -129,10 +134,9 @@ passport.use("current", new JWTStrategy(
 
     },
 
-
+    
 
     (jwt_payload, done) => {
-
 
         done(null, jwt_payload)
 
@@ -140,6 +144,36 @@ passport.use("current", new JWTStrategy(
 
 
 ))
+
+*/
+
+
+// current descrifra el token, busca el usurio por el mail que me esta llegando y lo devuelve
+
+passport.use("current",
+    new JWTStrategy(
+        
+        {
+
+            jwtFromRequest: ExtractJwt.fromExtractors([fromCookies]),
+            secretOrKey: SECRETJWT,
+    
+        },
+        
+        async (jwt_payload, done) => {
+      try {
+        const user = await findByEmailServ(jwt_payload.email);
+        if (!user) {
+          return done(null, false);
+        }
+        if (user) {
+          return done(null, user);
+        }
+      } catch (error) {
+        return done(error, false);
+      }
+    })
+  );
 
 
 

@@ -4,10 +4,13 @@ import { ProductManagerDB } from "../DAL/dao/mongoDao/products.dao.mongo.js";
 import { CartManagerDB } from "../DAL/dao/mongoDao/carts.dao.mongo.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 
+import {  UsersManagerDB, userManagerDB } from "../DAL/dao/mongoDao/users.dao.mongo.js";
+
 import { logger } from "../logger.js";
 
 import { transporter } from "../nodemialer.js";
 import { tr } from "@faker-js/faker";
+import { tokenValidationMiddleware } from "../middleware/jwt.middleware.js";
 
 
 
@@ -56,16 +59,16 @@ routerViews.get("/products", async (req, res) => {
 
 });
 */
-routerViews.get("/products", async (req, res) => {
+routerViews.get("/products",tokenValidationMiddleware, async (req, res) => {
 
   console.log('ACA PRODUCTS',req.user);
-
+/*
   if (!req.session.passport) {
 
     return res.redirect("/api/views/login")
 
   }
-
+*/
   let products = await productManagerDB.findAll(req.query)
 
   let productsDB = products.payload
@@ -102,17 +105,40 @@ routerViews.get("/carts/:cartId", async (req, res) => {
 
 });
 
+////NUEVOOO PROYECTOO FINAL
 
+
+
+routerViews.get("/userSetting/:userId", async (req, res) => {
+
+  const { userId } = req.params
+
+
+ const userById = await userManagerDB.findById(userId)
+
+ const userData = userById.toObject()
+
+ 
+  res.render("userSetting", {user: userData, userId  });
+
+})
+
+
+
+
+///////
 
 routerViews.get("/login", async (req, res) => {
 
-console.log("acaaaaaa",req.session);
+console.log("acaAHORA",req.user);
 
-  if (req.session.user) {
 
-    return res.redirect("/api/views/products")
 
-  }
+ // if (req.session.user) {
+
+  //  return res.redirect("/api/views/products")
+
+ // }
 
   res.render("login")
 
@@ -188,8 +214,8 @@ routerViews.get('/loggerTest', async (req, res) => {
 })
 
 
-routerViews.get('/documents', async (req, res) => {
-
+routerViews.get('/documents',tokenValidationMiddleware, async (req, res) => {
+/*
   console.log("COKIIEEEDOC",req.cookies.token);
 
  if (!req.user) {
@@ -197,7 +223,7 @@ routerViews.get('/documents', async (req, res) => {
   return res.status(400).json({ message: "NO HAY USURIO LOGEADO PARA DOC" });
   
  }
-
+*/
   const id=  req.user._id
  
   res.render("documents",{id})

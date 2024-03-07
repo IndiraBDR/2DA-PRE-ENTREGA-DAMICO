@@ -10,8 +10,6 @@ import  {transporter } from "../nodemialer.js";
 
 const generateTokenController = (req, res) => {
 
- 
-
   const { name, last_name, email,roles,_id } = req.user
 
   const token = generateToken({
@@ -33,10 +31,9 @@ const generateTokenController = (req, res) => {
 
   res.cookie("token", token, { maxAge: 60000, httpOnly: true })
 
-  
 
   //return res.redirect("/api/sessions/current")
-  return res.redirect("/api/views/products")
+   next()
 
 
 }

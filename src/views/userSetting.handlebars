@@ -1,0 +1,52 @@
+
+
+
+  <h2>{{user.name}}</h2>
+  <p>apellido:{{user.last_name}}</p>
+  <p> email:{{user.email}}</p>
+  <p> rol:{{user.roles}}</p>
+
+
+
+<form  action="/api/users/admin/{{userId}}" method="put"  id="Udatep-Rol-User">
+
+
+
+  Ingrese el nuevo ROL:
+  <input type="text" name="roles" id="roles" />
+
+  <input type="submit" value="Cambiar Rol" />
+
+</form>
+
+
+
+
+<!--
+
+
+//<form  action="/api/users/{{id}}/documents" enctype="multipart/form-data" method="post"  id="Form upload documents">
+
+
+  name
+last_name
+email
+
+  password
+    age
+    roles
+    status
+    last_connection
+
+
+
+
+
+
+
+
+<button><a href="/api/views/mailAviso">RESTAURAR PASSWORD</a></button>
+
+<button onclick=" location.href='/api/sessions/auth/github'" >GitHub</button>
+
+-->

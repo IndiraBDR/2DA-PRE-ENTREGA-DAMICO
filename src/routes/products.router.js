@@ -2,6 +2,7 @@ import { Router } from "express";
 import { findAllController, findByIdController, createOneController,updateOneController,deleteOneController ,productMocksController } from "../controllers/products.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import  passport  from "passport";
+import { tokenValidationMiddleware } from "../middleware/jwt.middleware.js";
 const routerProduct = Router();
 
 
@@ -98,12 +99,12 @@ routerProduct.put("/:pid", async (req, res) => {
 
 routerProduct.get("/", findAllController);
 routerProduct.get("/:pid", findByIdController);
-routerProduct.post("/",passport.authenticate("current",{session:false}), authMiddleware(["admin","premium"]), createOneController );
+routerProduct.post("/",tokenValidationMiddleware, authMiddleware(["admin","premium"]), createOneController );
 
 
 //,passport.authenticate("current",{session:false})
-routerProduct.put("/:pid",passport.authenticate("current",{session:false}),authMiddleware(["admin","premium"]) , updateOneController);
-routerProduct.delete("/:pid",passport.authenticate("current",{session:false}) , authMiddleware(["admin","premium"]) , deleteOneController);
+routerProduct.put("/:pid",tokenValidationMiddleware,authMiddleware(["admin","premium"]) , updateOneController);
+routerProduct.delete("/:pid",tokenValidationMiddleware, authMiddleware(["admin","premium"]) , deleteOneController);
 routerProduct.get('/mock/mockingproducts', productMocksController);
 
 

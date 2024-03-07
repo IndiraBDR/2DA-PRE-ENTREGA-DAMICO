@@ -1,13 +1,33 @@
 import { findAllUserService, findUserByCartIdServ, updateUserServ, findByIdServ, saveUserDocumentsServ } from "../services/users.service.js";
 import { CustomError } from "../errors/error.generator.js";
 import { errorsMessages } from "../errors/errors.enum.js";
+import UsersResponseDto from "../DAL/dtos/users-response.dto.js";
+import { mongoose } from "mongoose";
+import { usersModel } from "../DAL/models/users.model.js";
+import { transporter } from "../nodemialer.js";
+
 
 export const findAllUserController = async (req, res) => {
 
+  //const user = req.user
+
+  
+
+  //res.json({ message: newUserDtoRes })
+
+
   try {
+
     const users = await findAllUserService()
 
-    res.status(200).json({ message: "users total", users });
+  //const newUserDtoRes = new UsersResponseDto() 
+
+  // const usersMapDTO = users.map(user => newUserDtoRes(user)  )
+
+  const usersMapDTO = users.map(user => UsersResponseDto.fromModel(user))
+   console.log(usersMapDTO);
+
+    res.status(200).json({ message: "users total", usersMapDTO });
 
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -90,6 +110,42 @@ export const updateUserController = async (req, res) => {
 }
 
 
+///////NUEVO PROY FINAL
+
+
+export const updateUserAdminController = async (req, res) => {
+const { userId} = req.params;
+
+console.log('IDDDDDD',userId);
+
+console.log("BODY", req.body.roles);
+
+const userById = await findByIdServ(userId)
+
+console.log('USEEEEEER', userById);
+
+if (!userById) {
+  return CustomError.generateError(errorsMessages.USER_NOT_FOUND,404)
+}
+
+if (req.body.roles === 'admin') {
+
+  return res.status(403).json({ message: "EL ROL NO SE PUEDE CAMBIAR A ADMIN" });
+  
+}
+
+try {
+ 
+  await updateUserServ( userId, req.body);
+
+  res.status(200).json({ message: "User update" });
+} catch (error) {
+  res.status(500).json({ message: error.message });
+}
+
+}
+////////
+
 
 
 export const saveUserDocumentsController = async (req, res) => {
@@ -121,3 +177,57 @@ export const saveUserDocumentsController = async (req, res) => {
   const response = await saveUserDocumentsServ({ id, dni, address, bank })
   res.json({ response })
 }
+
+
+
+
+ export const deleteInactiveUsers = async (req, res)=>{
+
+  const users = await findAllUserService()
+
+
+  let fechaLimite = new Date()
+
+  fechaLimite.setTime(fechaLimite.getTime() - (2*60*1000))
+
+
+  const activeUsers = users.filter(item=>item.last_connection.getTime()>= fechaLimite.getTime())
+
+  const inactiveUsers= users.filter(item=>item.last_connection.getTime()<= fechaLimite.getTime())
+
+  console.log('ACTIVE USER:', activeUsers);
+  console.log('INACTIVE USER:', inactiveUsers);
+
+ 
+
+inactiveUsers.forEach(item => {
+
+   transporter.sendMail({
+
+    from:  "INDIRA",
+    to: item.email,
+    subject: "USURIO INACTIVO ELIMINADO",
+    html:
+  
+    ` 
+    <p>SU USUARIO FUE ELIMINADO YA QUE NO SE HA CONECTADO EN LOS ULTIMOS 2 DIAS</p>
+    
+    `
+   })
+  
+});
+
+ 
+
+  usersModel.deleteMany({ last_connection: { $lt: fechaLimite } }, (err) => {
+    if (err) return console.error(err);
+    console.log('Usuarios que no se han conectado en los últimos 2 minutos eliminados.');
+  });
+
+
+  return res.status(400).json({ message: "YEEEES",activeUsers });
+
+
+
+
+ }

@@ -7,6 +7,7 @@ import { generateToken } from "../utils/utils.js";
 
 import { transporter } from "../nodemialer.js";
 import { loggers } from "winston";
+import {tokenValidationMiddleware, generateTokenMiddleware } from "../middleware/jwt.middleware.js"
 
 const routerSessions = Router();
 
@@ -97,7 +98,12 @@ routerSessions.post("/signup", passport.authenticate("signup"), (req, res) => {
 )
 
 
-routerSessions.post("/login", passport.authenticate("login", { failureMessage: true, failureRedirect: "/api/views/error" }),generateTokenController)
+//ACAAAAA CAMBIOOOO JWT
+
+routerSessions.post("/login", passport.authenticate("login", { failureMessage: true, failureRedirect: "/api/views/error", session: false  }),generateTokenMiddleware, (req,res)=>{
+
+  return res.redirect("/api/views/products")
+})
 
 
 
@@ -115,7 +121,9 @@ routerSessions.get("/callback", passport.authenticate('github', {
 }),)
 
 
-routerSessions.get("/signout", async (req, res) => {
+routerSessions.get("/signout",tokenValidationMiddleware, async (req, res) => {
+
+  console.log("UNDEEE",req.user);
 
 const {_id} = req.user;
 

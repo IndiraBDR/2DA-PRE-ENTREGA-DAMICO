@@ -70,7 +70,7 @@ export const addProductToCartController = async (req, res) => {
 
   try {
 
-    if (req.user) {
+   // if (req.user) {
       
       //NUEVOO 3ER PRACT INT DEBE IR EN SERVICE
 
@@ -95,13 +95,15 @@ export const addProductToCartController = async (req, res) => {
 
 
 
-    } else {
+   // } else {
 
-     return CustomError.generateError(errorsMessages.USER_NOT_LOGGED_IN, 401)
+
+
+    // return CustomError.generateError(errorsMessages.USER_NOT_LOGGED_IN, 401)
       //res.status(401).json({ message: "There is no logged in user" });
       //REVISAR CODGI DEL ERROR- REVISADO LISTO
 
-    }
+   // }
 
   } catch (error) {
     res.status(500).json({ message: error.message });

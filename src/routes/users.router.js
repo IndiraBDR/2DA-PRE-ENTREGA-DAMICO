@@ -1,14 +1,24 @@
 import { Router } from "express";
-import {  findAllUserController, findUserByCartIdController,updateUserController,saveUserDocumentsController } from "../controllers/users.controller.js";
+import {  findAllUserController, findUserByCartIdController,updateUserController,saveUserDocumentsController, deleteInactiveUsers, updateUserAdminController } from "../controllers/users.controller.js";
 import { upload } from "../middleware/multer.middleware.js";
+import { tokenValidationMiddleware } from "../middleware/jwt.middleware.js";
 
 const routerUsers = Router();
 
-routerUsers.get("/", findAllUserController);
+routerUsers.get("/",tokenValidationMiddleware, findAllUserController);
 routerUsers.get("/:idCart", findUserByCartIdController );
 
 //NUEVO 3ER PRACT INT
 routerUsers.put("/premium/:idUser", updateUserController)
+
+
+///NUEVO FINAL
+routerUsers.put("/admin/:userId", updateUserAdminController)
+
+
+//routerUsers.delete("/rolUsersSetting",)
+
+routerUsers.delete("/deleteInactiveUsers",deleteInactiveUsers)
 
 routerUsers.post("/:id/documents",upload.fields([
 

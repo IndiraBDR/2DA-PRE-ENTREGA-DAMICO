@@ -77,7 +77,7 @@ const usersSchema = new Schema({
 
     last_connection: {
         type: Date,
-        required: true
+       // required: true
     },
 
 

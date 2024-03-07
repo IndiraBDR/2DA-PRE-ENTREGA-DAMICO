@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { findAllCartController, findCartByIdController, createOneCartController,addProductToCartController,updateCartController, addProductToCartQuantityController, deleteTotalProductToCartController,deleteProductToCartController,deleteToCart, purchaseCartController } from "../controllers/carts.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
+import { tokenValidationMiddleware } from "../middleware/jwt.middleware.js";
 
 const routerCart = Router();
 
@@ -77,7 +78,7 @@ routerCart.post("/:cid/product/:pid", async (req, res) => {
 routerCart.get("/", findAllCartController);
 routerCart.get("/:idCart", findCartByIdController);
 routerCart.post("/", createOneCartController);
-routerCart.post("/:idCart/products/:idProduct", addProductToCartController);
+routerCart.post("/:idCart/products/:idProduct",tokenValidationMiddleware, addProductToCartController);
 //este
 routerCart.put("/:idCart", updateCartController);
 routerCart.put("/:idCart/products/:idProduct", addProductToCartQuantityController);

@@ -39,6 +39,7 @@ app.use(cookieParser());
 //ACA CAMBIE VARIABLE ENV
 const URI = objConfigEnv.mongo_uri;
 
+
 app.use(session({ 
 
   store: new MongoStore({mongoUrl: URI}),

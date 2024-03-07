@@ -56,14 +56,7 @@ export const authMiddleware = (roles) => {
 
         console.log("authMiddleware",user);
 
-      
-        if (!user) {
-
-           // return res.status(401).json({ message: "There is no logged in user" })
-
-            return CustomError.generateError(errorsMessages.USER_NOT_LOGGED_IN, 401)
-
-        }
+    
 
         if (roles && !roles.includes(user.roles)) {
 
