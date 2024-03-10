@@ -1,4 +1,4 @@
-import { findAllUserService, findUserByCartIdServ, updateUserServ, findByIdServ, saveUserDocumentsServ } from "../services/users.service.js";
+import { findAllUserService, findUserByCartIdServ, updateUserServ, findByIdServ, saveUserDocumentsServ, deleteUserServ } from "../services/users.service.js";
 import { CustomError } from "../errors/error.generator.js";
 import { errorsMessages } from "../errors/errors.enum.js";
 import UsersResponseDto from "../DAL/dtos/users-response.dto.js";
@@ -118,7 +118,7 @@ const { userId} = req.params;
 
 console.log('IDDDDDD',userId);
 
-console.log("BODY", req.body.roles);
+//console.log("BODY", req.body.roles);
 
 const userById = await findByIdServ(userId)
 
@@ -127,15 +127,21 @@ console.log('USEEEEEER', userById);
 if (!userById) {
   return CustomError.generateError(errorsMessages.USER_NOT_FOUND,404)
 }
-
+/*
 if (req.body.roles === 'admin') {
 
   return res.status(403).json({ message: "EL ROL NO SE PUEDE CAMBIAR A ADMIN" });
   
 }
-
+*/
 try {
- 
+ if (!req.body) {
+
+  await updateUserServ( userId, userById.roles);
+
+  return res.status(200).json({ message:"XDDD" });
+
+ }
   await updateUserServ( userId, req.body);
 
   res.status(200).json({ message: "User update" });
@@ -144,6 +150,20 @@ try {
 }
 
 }
+
+
+export const deleteUserAdminController =async (req, res) => {
+
+  const { userId} = req.params;
+
+  
+ await deleteUserServ( userId);
+
+ return res.status(200).json({ message:"BORRADO" });
+
+  
+}
+
 ////////
 
 

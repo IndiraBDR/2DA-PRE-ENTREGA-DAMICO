@@ -60,7 +60,9 @@ passport.use("signup", new LocalStrategy({ passReqToCallback: true, usernameFiel
 
 passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
 
+
     if (!email || !password) {
+
 
         return done(null, false, { message: "All fields are required" })
 

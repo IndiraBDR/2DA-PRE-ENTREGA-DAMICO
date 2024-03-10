@@ -84,6 +84,13 @@ export const  saveUserDocumentsServ = async ({id,dni,address,bank}) => {
 
 }
 
+//PROYECTO
 
+export const  deleteUserServ =(id)=>  {
+
+    const deletedUser =  userManagerDB.deleteOne(id);
+    return deletedUser
+
+};
 
 export{ findAllUserService, findByEmailServ, findUserByCartIdServ }

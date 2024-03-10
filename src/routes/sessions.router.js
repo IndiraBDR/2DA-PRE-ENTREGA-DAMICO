@@ -88,9 +88,9 @@ routerSessions.post("/login", async (req, res) => {
 
 
 
-routerSessions.post("/signup", passport.authenticate("signup"), (req, res) => {
+routerSessions.post("/signup", passport.authenticate("signup", { session: false }), (req, res) => {
 
-  return res.redirect("/api/views/products")
+  return res.redirect("/api/views/login")
 
 }
 
@@ -100,7 +100,8 @@ routerSessions.post("/signup", passport.authenticate("signup"), (req, res) => {
 
 //ACAAAAA CAMBIOOOO JWT
 
-routerSessions.post("/login", passport.authenticate("login", { failureMessage: true, failureRedirect: "/api/views/error", session: false  }),generateTokenMiddleware, (req,res)=>{
+routerSessions.post("/login", passport.authenticate("login",{ failureMessage: true, failureRedirect: "/api/views/error", session: false }),generateTokenMiddleware, (req,res)=>{
+
 
   return res.redirect("/api/views/products")
 })

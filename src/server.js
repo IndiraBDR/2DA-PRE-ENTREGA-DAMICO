@@ -4,6 +4,10 @@ import { routerCart } from "./routes/cart.router.js";
 import { routerSessions  } from "./routes/sessions.router.js";
 import { routerUsers } from "./routes/users.router.js";
 import { engine } from "express-handlebars";
+
+//
+import  Handlebars  from "handlebars";
+
 import { __dirname } from "./utils/utils.js";
 import { routerViews } from "./routes/views.router.js";
 import { Server } from "socket.io";
@@ -139,3 +143,15 @@ socketServer.on("connection", async (socket) => {
 });
  
 
+
+///FINAL
+
+
+
+Handlebars.registerHelper('strictEq', function(a, b, options) {
+  if (a === b) {
+    return options.fn(this);
+  } else {
+    return options.inverse(this);
+  }
+});

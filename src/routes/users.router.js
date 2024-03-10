@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {  findAllUserController, findUserByCartIdController,updateUserController,saveUserDocumentsController, deleteInactiveUsers, updateUserAdminController } from "../controllers/users.controller.js";
+import {  findAllUserController, findUserByCartIdController,updateUserController,saveUserDocumentsController, deleteInactiveUsers, updateUserAdminController, deleteUserAdminController } from "../controllers/users.controller.js";
 import { upload } from "../middleware/multer.middleware.js";
 import { tokenValidationMiddleware } from "../middleware/jwt.middleware.js";
 
@@ -13,7 +13,10 @@ routerUsers.put("/premium/:idUser", updateUserController)
 
 
 ///NUEVO FINAL
-routerUsers.put("/admin/:userId", updateUserAdminController)
+routerUsers.post("/admin/updateUser/:userId", updateUserAdminController)
+
+
+routerUsers.post("/admin/deleteUser/:userId", deleteUserAdminController)
 
 
 //routerUsers.delete("/rolUsersSetting",)

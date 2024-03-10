@@ -3,6 +3,7 @@ import { productMock } from "../mock/productMock.js";
 import { CustomError } from "../errors/error.generator.js";
 import { errorsMessages } from "../errors/errors.enum.js";
 import { logger } from "../logger.js"
+import { transporter } from "../nodemialer.js";
 
 
 export const findAllController = async (req, res) => {
@@ -128,6 +129,19 @@ export const deleteOneController = async (req, res) => {
         if (productoFiltrado.owner === req.user.email) {
   
           logger.info('EL USURIO SI CREO ESTE PRODUCTO, PUEDE ELIMINARLO');
+
+          transporter.sendMail({
+
+            from:  "INDIRA",
+            to: productoFiltrado.owner,
+            subject: "PRODUCTO ELIMINADO",
+            html:
+          
+            ` 
+            <p>SU PRODUCTO FUE ELIMINADO</p>
+            
+            `
+           })
   
           await deleteOneServ(pid);
 

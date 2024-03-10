@@ -116,6 +116,14 @@ routerViews.get("/userSetting/:userId", async (req, res) => {
 
  const userById = await userManagerDB.findById(userId)
 
+ if (!userById) {
+
+ return res.render("userSetting", {user:"VACIO"} );
+
+  
+  
+ }
+
  const userData = userById.toObject()
 
  
@@ -132,8 +140,6 @@ routerViews.get("/login", async (req, res) => {
 
 console.log("acaAHORA",req.user);
 
-
-
  // if (req.session.user) {
 
   //  return res.redirect("/api/views/products")
@@ -146,13 +152,13 @@ console.log("acaAHORA",req.user);
 
 
 routerViews.get("/signup", async (req, res) => {
+/*
+ // if (req.session.user) {
 
-  if (req.session.user) {
+   //return res.redirect("/api/views/products")
 
-    return res.redirect("/api/views/products")
-
-  }
-
+ // }
+*/
   res.render("signup")
 
 });
@@ -184,6 +190,8 @@ routerViews.get("/restaurarPassword", async (req, res) => {
 });
 
 routerViews.get('/error', async (req, res) => {
+
+  console.log(req);
 
   const reqMessages = req.session.messages;
 
