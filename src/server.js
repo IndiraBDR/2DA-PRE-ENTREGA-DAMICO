@@ -4,10 +4,7 @@ import { routerCart } from "./routes/cart.router.js";
 import { routerSessions  } from "./routes/sessions.router.js";
 import { routerUsers } from "./routes/users.router.js";
 import { engine } from "express-handlebars";
-
-//
 import  Handlebars  from "handlebars";
-
 import { __dirname } from "./utils/utils.js";
 import { routerViews } from "./routes/views.router.js";
 import { Server } from "socket.io";
@@ -40,7 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 
-//ACA CAMBIE VARIABLE ENV
+
 const URI = objConfigEnv.mongo_uri;
 
 
@@ -72,8 +69,6 @@ app.use(errorMiddleware);
 
 
 
-//ACA INTENTE CAMBIAR VARIABLE ENV: Intente colocolar en el listen la variale PORT, pero cuando lo hacia 
-//me tirabaun error diciendo que se estaba utilizando en otra parte duplicado el puerto 8080
 const PORT = objConfigEnv.port;
 
 const httpServer = app.listen(PORT, () => {
@@ -143,8 +138,6 @@ socketServer.on("connection", async (socket) => {
 });
  
 
-
-///FINAL
 
 
 

@@ -3,10 +3,7 @@ import { findByEmailServ,updateUserServ } from "../services/users.service.js";
 import UsersResponseDto from "../DAL/dtos/users-response.dto.js";
 import { CustomError } from "../errors/error.generator.js";
 import { errorsMessages } from "../errors/errors.enum.js";
-
 import  {transporter } from "../nodemialer.js";
-
-
 
 const generateTokenController = (req, res) => {
 
@@ -32,13 +29,11 @@ const generateTokenController = (req, res) => {
   res.cookie("token", token, { maxAge: 60000, httpOnly: true })
 
 
-  //return res.redirect("/api/sessions/current")
+
    next()
 
 
 }
-
-
 
 const userReqController = (req, res) => {
 
@@ -48,10 +43,17 @@ const userReqController = (req, res) => {
 
   res.json({ message: newUserDtoRes })
 
- //return res.send({status:"success", payload:user})
 
 }
 
+const signoutController = async (req, res) => {
+  
+  const {_id} = req.user;
+  updateUserServ(_id, {last_connection:new Date()});
+   res.clearCookie("token")
+   res.redirect("/api/views/login")
+  
+}
 
 const restaurarPasswordController = async (req, res) => {
 
@@ -73,7 +75,6 @@ const restaurarPasswordController = async (req, res) => {
       return res.redirect("/api/views/signup")
     }
 
-    //IDEA DE COMO RESOLVER EL BOTON
 
     const passwordValdHash = await compareData(newPassword, user.password);
 
@@ -84,9 +85,7 @@ const restaurarPasswordController = async (req, res) => {
 
     }
 
-    ///////
-
-
+  
     const hashedNewPassword = await hashData(newPassword);
 
     user.password = hashedNewPassword;
@@ -104,5 +103,43 @@ const restaurarPasswordController = async (req, res) => {
 
 }
 
+const sendMailRestPasswordController = async (req, res) => {
 
-export { generateTokenController, userReqController, restaurarPasswordController }
+  const { email} = req.body
+
+  try {
+
+    await transporter.sendMail({
+
+      from:  "INDIRA",
+      to: email,
+      subject: "MAIL DE RECUPERACION DE CONTRASEÑA",
+      html:
+
+      `
+      <button><a href="http://localhost:8080/api/views/restaurarPassword" target="_blank">RESTAURAR PASSWORD</a></button>
+      
+      <p>Si el boton gno funciona, copia y pega la siguiente URL en tu navegador:</p>
+      <p>http://localhost:8080/api/views/restaurarPassword</p>
+      
+      `
+
+     })
+     
+     const tokencito = generateToken({email})    
+     res.cookie('tokencito', tokencito, { maxAge: 3600000, httpOnly: true })
+
+
+     res.status(200).json({ message: "MAIL ENVIADO" });
+  
+   
+    
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+
+
+}
+
+
+export { generateTokenController, userReqController, restaurarPasswordController,signoutController,sendMailRestPasswordController }

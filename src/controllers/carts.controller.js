@@ -23,7 +23,6 @@ export const findCartByIdController = async (req, res) => {
 
   const { idCart } = req.params;
 
-
   try {
     const cart = await findCartByIdServ(idCart)
 
@@ -34,7 +33,6 @@ export const findCartByIdController = async (req, res) => {
     } else {
       res.status(200).json({ message: "cart found", cart });
     }
-    //res.status(200).json({ message: "cart by id", cart });
 
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -70,40 +68,24 @@ export const addProductToCartController = async (req, res) => {
 
   try {
 
-   // if (req.user) {
-      
-      //NUEVOO 3ER PRACT INT DEBE IR EN SERVICE
 
-      if (req.user.roles === "premium") {
+    if (req.user.roles === "premium") {
 
-        let productoFiltrado = await findByIdServ(idProduct);
+      let productoFiltrado = await findByIdServ(idProduct);
 
-        if (productoFiltrado.owner === req.user.email) {
+      if (productoFiltrado.owner === req.user.email) {
 
-          return res.status(403).json({ message: "USTED ES EL DUEÑO, NO  PUEDE AGREGAR EL PRODUCTO AL CARRITO" })
-
-        }
+        return res.status(403).json({ message: "USTED ES EL DUEÑO, NO  PUEDE AGREGAR EL PRODUCTO AL CARRITO" })
 
       }
-      ///////
+
+    }
+
+    const updatedCart = await addProductToCartServ(idCart, idProduct);
+
+    res.status(200).json({ message: "product added successfully", product: updatedCart });
 
 
-     
-      const updatedCart = await addProductToCartServ(idCart, idProduct);
-
-      res.status(200).json({ message: "product added successfully", product: updatedCart });
-
-
-
-   // } else {
-
-
-
-    // return CustomError.generateError(errorsMessages.USER_NOT_LOGGED_IN, 401)
-      //res.status(401).json({ message: "There is no logged in user" });
-      //REVISAR CODGI DEL ERROR- REVISADO LISTO
-
-   // }
 
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -132,9 +114,8 @@ export const updateCartController = async (req, res) => {
 
     const updatedCart = await updateCartServ(idCart, newProducts);
 
-
-
     res.status(200).json({ message: "product update in cart" });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -169,6 +150,7 @@ export const addProductToCartQuantityController = async (req, res) => {
 
 
     res.status(200).json({ message: "quantity update in cart" });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -185,6 +167,7 @@ export const deleteTotalProductToCartController = async (req, res) => {
     const updatedCart = await deleteTotalProductToCartServ(idCart);
 
     res.status(200).json({ message: "product total delete in cart" });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -196,7 +179,6 @@ export const deleteProductToCartController = async (req, res) => {
   const { idCart, idProduct } = req.params;
 
   try {
-
 
     const cart = await findCartByIdServ(idCart)
 
@@ -211,6 +193,7 @@ export const deleteProductToCartController = async (req, res) => {
 
 
     res.status(200).json({ message: "Product deleted in cart" });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -219,20 +202,27 @@ export const deleteProductToCartController = async (req, res) => {
 
 export const purchaseCartController = async (req, res) => {
 
-  const { idCart } = req.params;
+  try {
 
-  const cart = await findCartByIdServ(idCart)
+    const { idCart } = req.params;
 
-  if (!cart) {
+    const cart = await findCartByIdServ(idCart)
 
-    return CustomError.generateError(errorsMessages.CART_NOT_FOUND, 404)
+    if (!cart) {
 
+      return CustomError.generateError(errorsMessages.CART_NOT_FOUND, 404)
+
+    }
+
+    const response = await purchase(idCart);
+
+    // res.json({ response })
+
+    res.status(200).json({ response })
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-
-
-  const response = await purchase(idCart);
-
-  res.json({ response })
 
 
 }

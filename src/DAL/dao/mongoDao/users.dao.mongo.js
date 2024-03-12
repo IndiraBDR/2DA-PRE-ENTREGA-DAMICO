@@ -28,6 +28,20 @@ class UsersManagerDB extends BasicManagerDB {
 
 
     }
+
+
+    async deleteInactiveUser(condicional) {
+
+       usersModel.deleteMany(condicional, (err) => {
+        if (err) return console.error(err);
+        console.log('Usuarios que no se han conectado en los últimos 2 minutos fueron eliminados.');
+      });
+    
+
+    }
+
+
+
 }
 
 

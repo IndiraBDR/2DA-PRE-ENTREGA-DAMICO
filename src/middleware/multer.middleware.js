@@ -1,7 +1,5 @@
 import multer from "multer";
-
 import { __dirname } from "../utils/utils.js";
-
 
 
 const storage = multer.diskStorage({

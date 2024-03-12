@@ -7,24 +7,23 @@ import { hashData, compareData } from "./utils/utils.js";
 import { objConfigEnv } from "./config/config.js";
 import { cartManagerBD } from "./DAL/dao/mongoDao/carts.dao.mongo.js";
 import { UsersRequestDto } from "./DAL/dtos/users-request.dto.js";
-
 import { CustomError } from "./errors/error.generator.js";
 import { errorsMessages } from "./errors/errors.enum.js";
 import { findByEmailServ } from "./services/users.service.js";
 
 const usersManagerDB = new UsersManagerDB();
 
-//ACA CAMBIE UNA VARIABLE ENV
+
 const SECRETJWT = objConfigEnv.secret_jwt;
 
 passport.use("signup", new LocalStrategy({ passReqToCallback: true, usernameField: "email" }, async (req, email, password, done) => {
 
-    
+
     const { name, last_name } = req.body
 
     if (!email || !password || !name || !last_name) {
 
-        return done(null, false, { message: "All fields are required" })
+        return done(null, false, { message: 'All fields are required' })
 
     }
 
@@ -53,6 +52,8 @@ passport.use("signup", new LocalStrategy({ passReqToCallback: true, usernameFiel
 
 
     } catch (error) {
+
+
         done(error)
     }
 }))
@@ -61,17 +62,20 @@ passport.use("signup", new LocalStrategy({ passReqToCallback: true, usernameFiel
 passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
 
 
-    if (!email || !password) {
-
-
-        return done(null, false, { message: "All fields are required" })
-
-    }
-
     try {
+
+        if (!email || !password) {
+
+
+            return done(null, false, { message: "All fields are required LOGIN" })
+
+        }
+
+
         const user = await usersManagerDB.findByEmail(email);
-       
+
         if (!user) {
+
             return done(null, false, { message: "Incorrect email or password" })
         }
 
@@ -79,6 +83,7 @@ passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email
         const passwordValdHash = await compareData(password, user.password);
 
         if (!passwordValdHash) {
+
 
             return done(null, false, { message: "Incorrect email or password" })
 
@@ -89,6 +94,8 @@ passport.use("login", new LocalStrategy({ usernameField: "email" }, async (email
         done(null, user)
 
     } catch (error) {
+
+        console.log("LOCAAAAAA");
         done(error)
     }
 }))
@@ -122,10 +129,10 @@ const fromCookies = (req) => {
 const fromCookies = (req) => {
     let token = null;
     if (req?.cookies) {
-      token = req.cookies['token'];
+        token = req.cookies['token'];
     }
     return token;
-  };
+};
 /*
 passport.use("current", new JWTStrategy(
 
@@ -154,28 +161,28 @@ passport.use("current", new JWTStrategy(
 
 passport.use("current",
     new JWTStrategy(
-        
+
         {
 
             jwtFromRequest: ExtractJwt.fromExtractors([fromCookies]),
             secretOrKey: SECRETJWT,
-    
+
         },
-        
+
         async (jwt_payload, done) => {
-      try {
-        const user = await findByEmailServ(jwt_payload.email);
-        if (!user) {
-          return done(null, false);
-        }
-        if (user) {
-          return done(null, user);
-        }
-      } catch (error) {
-        return done(error, false);
-      }
-    })
-  );
+            try {
+                const user = await findByEmailServ(jwt_payload.email);
+                if (!user) {
+                    return done(null, false);
+                }
+                if (user) {
+                    return done(null, user);
+                }
+            } catch (error) {
+                return done(error, false);
+            }
+        })
+);
 
 
 

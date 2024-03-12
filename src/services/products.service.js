@@ -1,8 +1,8 @@
 import { productManagerDB } from "../DAL/dao/mongoDao/products.dao.mongo.js";
 
-export const  findAllServ = (obj) =>  {
+export const findAllServ = (obj) => {
 
-    const products =  productManagerDB.findAll(obj)
+    const products = productManagerDB.findAll(obj)
     return products
 
 };
@@ -10,31 +10,28 @@ export const  findAllServ = (obj) =>  {
 
 export const findByIdServ = (id) => {
 
-    const productoFiltrado =  productManagerDB.findById(id);
-
+    const productoFiltrado = productManagerDB.findById(id);
     return productoFiltrado
 
 };
 
-export const createOneServ =(obj)  => {
+export const createOneServ = (obj) => {
 
-    const createdProduct =  productManagerDB.createOne(obj);
-
-    return  createdProduct 
+    const createdProduct = productManagerDB.createOne(obj);
+    return createdProduct
 
 };
 
-export const  updateOneServ =(id, obj)=>  {
+export const updateOneServ = (id, obj) => {
 
-    const updatedProduct =  productManagerDB.updateOne(id, obj);
+    const updatedProduct = productManagerDB.updateOne(id, obj);
     return updatedProduct
 
 };
 
-export const  deleteOneServ = (id) => {
+export const deleteOneServ = (id) => {
 
-   const deletedProduct = productManagerDB.deleteOne(id);
-
+    const deletedProduct = productManagerDB.deleteOne(id);
     return deletedProduct
 
 };

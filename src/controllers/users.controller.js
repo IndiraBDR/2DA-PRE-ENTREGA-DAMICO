@@ -1,4 +1,4 @@
-import { findAllUserService, findUserByCartIdServ, updateUserServ, findByIdServ, saveUserDocumentsServ, deleteUserServ } from "../services/users.service.js";
+import { findAllUserService, findUserByCartIdServ, updateUserServ, findByIdServ, saveUserDocumentsServ, deleteUserServ, deleteInactiveUsersServ } from "../services/users.service.js";
 import { CustomError } from "../errors/error.generator.js";
 import { errorsMessages } from "../errors/errors.enum.js";
 import UsersResponseDto from "../DAL/dtos/users-response.dto.js";
@@ -9,23 +9,12 @@ import { transporter } from "../nodemialer.js";
 
 export const findAllUserController = async (req, res) => {
 
-  //const user = req.user
-
-  
-
-  //res.json({ message: newUserDtoRes })
-
-
   try {
 
     const users = await findAllUserService()
 
-  //const newUserDtoRes = new UsersResponseDto() 
-
-  // const usersMapDTO = users.map(user => newUserDtoRes(user)  )
-
-  const usersMapDTO = users.map(user => UsersResponseDto.fromModel(user))
-   console.log(usersMapDTO);
+    const usersMapDTO = users.map(user => UsersResponseDto.fromModel(user))
+    console.log(usersMapDTO);
 
     res.status(200).json({ message: "users total", usersMapDTO });
 
@@ -83,7 +72,7 @@ export const updateUserController = async (req, res) => {
     const address = documentsController.find((item) => item.name === 'address')
     const bank = documentsController.find((item) => item.name === 'bank')
 
-   
+
     if (userById.roles === "user") {
 
       if (!dni || !address || !bank) {
@@ -110,58 +99,52 @@ export const updateUserController = async (req, res) => {
 }
 
 
-///////NUEVO PROY FINAL
+///////NUEVO PROY FINAL VOLVER A PROBAR DE ACA EN ADELANTE AREGUE TRY CHATC
 
 
 export const updateUserAdminController = async (req, res) => {
-const { userId} = req.params;
 
-console.log('IDDDDDD',userId);
+  const { userId } = req.params;
+  const userById = await findByIdServ(userId)
 
-//console.log("BODY", req.body.roles);
+  if (!userById) {
+    return CustomError.generateError(errorsMessages.USER_NOT_FOUND, 404)
+  }
 
-const userById = await findByIdServ(userId)
 
-console.log('USEEEEEER', userById);
+  try {
+    if (!req.body) {
 
-if (!userById) {
-  return CustomError.generateError(errorsMessages.USER_NOT_FOUND,404)
-}
-/*
-if (req.body.roles === 'admin') {
+      await updateUserServ(userId, userById.roles);
 
-  return res.status(403).json({ message: "EL ROL NO SE PUEDE CAMBIAR A ADMIN" });
-  
-}
-*/
-try {
- if (!req.body) {
+      return res.status(200).json({ message: "XDDD" });
 
-  await updateUserServ( userId, userById.roles);
+    }
+    await updateUserServ(userId, req.body);
 
-  return res.status(200).json({ message:"XDDD" });
-
- }
-  await updateUserServ( userId, req.body);
-
-  res.status(200).json({ message: "User update" });
-} catch (error) {
-  res.status(500).json({ message: error.message });
-}
+    res.status(200).json({ message: "User update" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 
 }
 
 
-export const deleteUserAdminController =async (req, res) => {
+export const deleteUserAdminController = async (req, res) => {
 
-  const { userId} = req.params;
+  try {
 
-  
- await deleteUserServ( userId);
+    const { userId } = req.params;
 
- return res.status(200).json({ message:"BORRADO" });
+    await deleteUserServ(userId);
 
-  
+    return res.status(200).json({ message: "USER DELETED" });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+
+
 }
 
 ////////
@@ -170,84 +153,57 @@ export const deleteUserAdminController =async (req, res) => {
 
 export const saveUserDocumentsController = async (req, res) => {
 
-   const { id } = req.params
+  try {
 
-  const { dni, address, bank } = req.files
+    const { id } = req.params
 
-  if (dni && address) {
+    const { dni, address, bank } = req.files
 
-    updateUserServ(id, { status: "loaded-dni-address" });
+    if (dni && address) {
 
-  } else {
- 
-    return res.status(400).json({ message: "All fields are required" });
+      updateUserServ(id, { status: "loaded-dni-address" });
+
+    } else {
+
+      return res.status(400).json({ message: "All fields are required" });
+
+    }
+
+
+    if (dni && address && bank) {
+
+      updateUserServ(id, { status: "completed-documents" });
+
+    }
+
+
+    const response = await saveUserDocumentsServ({ id, dni, address, bank })
+    res.json({ response })
+
+  } catch (error) {
+
+    res.status(500).json({ message: error.message });
 
   }
 
 
-  if (dni && address && bank) {
-
-
-    updateUserServ(id, { status: "completed-documents" });
-
-
-  }
-
-
-  const response = await saveUserDocumentsServ({ id, dni, address, bank })
-  res.json({ response })
 }
 
 
 
 
- export const deleteInactiveUsers = async (req, res)=>{
+export const deleteInactiveUsersController = async (req, res) => {
 
-  const users = await findAllUserService()
+  try {
 
+    const resultActiveUsers = await deleteInactiveUsersServ()
 
-  let fechaLimite = new Date()
+    return res.status(200).json({ message: "Active Users", resultActiveUsers });
 
-  fechaLimite.setTime(fechaLimite.getTime() - (2*60*1000))
+  } catch (error) {
+    res.status(500).json({ message: error.message });
 
-
-  const activeUsers = users.filter(item=>item.last_connection.getTime()>= fechaLimite.getTime())
-
-  const inactiveUsers= users.filter(item=>item.last_connection.getTime()<= fechaLimite.getTime())
-
-  console.log('ACTIVE USER:', activeUsers);
-  console.log('INACTIVE USER:', inactiveUsers);
-
- 
-
-inactiveUsers.forEach(item => {
-
-   transporter.sendMail({
-
-    from:  "INDIRA",
-    to: item.email,
-    subject: "USURIO INACTIVO ELIMINADO",
-    html:
-  
-    ` 
-    <p>SU USUARIO FUE ELIMINADO YA QUE NO SE HA CONECTADO EN LOS ULTIMOS 2 DIAS</p>
-    
-    `
-   })
-  
-});
-
- 
-
-  usersModel.deleteMany({ last_connection: { $lt: fechaLimite } }, (err) => {
-    if (err) return console.error(err);
-    console.log('Usuarios que no se han conectado en los últimos 2 minutos eliminados.');
-  });
+  }
 
 
-  return res.status(400).json({ message: "YEEEES",activeUsers });
-
-
-
-
- }
+}

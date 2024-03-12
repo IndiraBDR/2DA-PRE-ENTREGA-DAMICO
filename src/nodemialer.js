@@ -1,17 +1,16 @@
-import  nodemailer  from "nodemailer";
+import nodemailer from "nodemailer";
 import { objConfigEnv } from "./config/config.js";
-
 
 //evus fdcx bsih xeme
 
 const transporter = nodemailer.createTransport({
 
-    service:"gmail",
+    service: "gmail",
 
-    auth:{
+    auth: {
 
-        user:objConfigEnv.nodemailer_user,
-        pass:objConfigEnv.nodemailer_password
+        user: objConfigEnv.nodemailer_user,
+        pass: objConfigEnv.nodemailer_password
 
     }
 
@@ -20,4 +19,4 @@ const transporter = nodemailer.createTransport({
 
 
 
-export{transporter}
+export { transporter }

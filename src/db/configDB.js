@@ -12,7 +12,7 @@ mongoose.connect(URI)
 
 */
 
-//ACA CAMBIAR VARIABLE ENV
+
 const URI = objConfigEnv.mongo_uri;
 
 mongoose.connect(URI)

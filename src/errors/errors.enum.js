@@ -12,8 +12,6 @@ const errorsMessages ={
     NO_PERMISSION_FOR_THIS_ACTION:"Your user does not have permissions for this action"
     
     
-
-
 }
 
 export {errorsMessages};

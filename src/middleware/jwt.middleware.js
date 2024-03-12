@@ -42,7 +42,6 @@ export const generateTokenMiddleware = (req, res,next) => {
     res.cookie("token", token, { maxAge: 60000, httpOnly: true })
   
   
-    //return res.redirect("/api/sessions/current")
      next()
   
   

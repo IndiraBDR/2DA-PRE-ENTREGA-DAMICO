@@ -1,77 +1,71 @@
 
 import { userManagerDB } from "../DAL/dao/mongoDao/users.dao.mongo.js";
+import { transporter } from "../nodemialer.js";
 
 
- const findAllUserService =()=>{
+const findAllUserService = () => {
 
     const users = userManagerDB.findAll()
     return users
 }
 
 
-export const findByIdServ= (id)=>{
+export const findByIdServ = (id) => {
 
     const userById = userManagerDB.findById(id);
     return userById;
 
 };
 
-const findByEmailServ =(email)=> {
+const findByEmailServ = (email) => {
 
-
-
-    const userByEmail =  userManagerDB.findByEmail(email)
-    
+    const userByEmail = userManagerDB.findByEmail(email)
     return userByEmail;
 
 };
 
-export const createOneServ =(obj)=> {
+export const createOneServ = (obj) => {
 
-    const createdUser =  userManagerDB.createOne(obj)
+    const createdUser = userManagerDB.createOne(obj)
     return createdUser;
 
 };
 
- const findUserByCartIdServ =(idCart)=>{
+const findUserByCartIdServ = (idCart) => {
 
     const userByCartId = userManagerDB.findUserByCartId(idCart)
-
     return userByCartId
 }
 
 
+export const updateUserServ = (id, obj) => {
 
-//NUEVO 3ER PRAC I.
-
-export const  updateUserServ =(id, obj)=>  {
-
-    const updatedUser =  userManagerDB.updateOne(id, obj);
+    const updatedUser = userManagerDB.updateOne(id, obj);
     return updatedUser
 
 };
 
 
-export const  saveUserDocumentsServ = async ({id,dni,address,bank}) => {
+export const saveUserDocumentsServ = async ({ id, dni, address, bank }) => {
 
-    const obj={
+    const obj = {
 
-        documents:[
+        documents: [
 
-            ...(dni?[{
-                name:"dni",
+            ...(dni ? [{
+                name: "dni",
                 reference: dni[0].path
-            }]:[]),
+            }] : []),
 
-            ...(address?[{
-                name:"address",
+            ...(address ? [{
+                name: "address",
                 reference: address[0].path
-            }]:[]),
+            }] : []),
 
-            ...(bank?[{
-                name:"bank",
+            ...(bank ? [{
+                name: "bank",
                 reference: bank[0].path
-            }]:[]),
+            }] : []),
 
 
 
@@ -79,18 +73,60 @@ export const  saveUserDocumentsServ = async ({id,dni,address,bank}) => {
     }
 
 
-    const saveUserDocuments =  userManagerDB.updateOne(id, obj);
+    const saveUserDocuments = userManagerDB.updateOne(id, obj);
     return saveUserDocuments
 
 }
 
-//PROYECTO
 
-export const  deleteUserServ =(id)=>  {
 
-    const deletedUser =  userManagerDB.deleteOne(id);
+export const deleteUserServ = (id) => {
+
+    const deletedUser = userManagerDB.deleteOne(id);
     return deletedUser
 
 };
 
-export{ findAllUserService, findByEmailServ, findUserByCartIdServ }
+
+
+
+export const deleteInactiveUsersServ = async () => {
+
+    const users = await findAllUserService()
+
+    let fechaLimite = new Date()
+    fechaLimite.setTime(fechaLimite.getTime() - (2 * 60 * 1000))
+
+
+    const activeUsers = users.filter(item => item.last_connection.getTime() >= fechaLimite.getTime())
+    const inactiveUsers = users.filter(item => item.last_connection.getTime() <= fechaLimite.getTime())
+
+
+
+    inactiveUsers.forEach(item => {
+
+        transporter.sendMail({
+
+            from: "INDIRA",
+            to: item.email,
+            subject: "USUARIO INACTIVO ELIMINADO",
+            html:
+
+                ` 
+    <p>SU USUARIO FUE ELIMINADO YA QUE NO SE HA CONECTADO EN LOS ULTIMOS 2 MINUTOS</p>
+    
+    `
+        })
+
+    });
+
+
+
+    userManagerDB.deleteInactiveUser({ last_connection: { $lt: fechaLimite } })
+
+    return activeUsers
+
+
+}
+
+export { findAllUserService, findByEmailServ, findUserByCartIdServ }

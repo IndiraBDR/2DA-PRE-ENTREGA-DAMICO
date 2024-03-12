@@ -6,8 +6,7 @@ import { logger } from "../logger.js"
 import { transporter } from "../nodemialer.js";
 
 
-export const findAllController = async (req, res) => {
-
+export const findAllProductsController = async (req, res) => {
 
   try {
 
@@ -18,15 +17,12 @@ export const findAllController = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
 
-
-
   }
-
 
 }
 
 
-export const findByIdController = async (req, res) => {
+export const findByIdProductController = async (req, res) => {
 
   const { pid } = req.params;
 
@@ -36,7 +32,7 @@ export const findByIdController = async (req, res) => {
     if (!productoFiltrado) {
 
       return CustomError.generateError(errorsMessages.PRODUCT_NOT_FOUND, 404)
-      //res.status(404).json({ message: "product not found" });
+      
     } else {
       res.status(200).json({ message: "product found", productoFiltrado });
     }
@@ -46,10 +42,8 @@ export const findByIdController = async (req, res) => {
 }
 
 
-export const createOneController = async (req, res) => {
-  //console.log("ACA", req.user);
-  //INFO DEL USURIO LOGEADO
-
+export const createOneProductController = async (req, res) => {
+ 
   try {
 
     let createdProduct;
@@ -66,7 +60,6 @@ export const createOneController = async (req, res) => {
       }else{
 
      
-        
         if (!req.body.owner) {
 
           logger.info(`OWNER POR BODY: ${req.body.owner}`);
@@ -89,7 +82,7 @@ export const createOneController = async (req, res) => {
 
 
 
-export const updateOneController = async (req, res) => {
+export const updateOneProductController = async (req, res) => {
 
   const { pid } = req.params;
 
@@ -107,7 +100,7 @@ export const updateOneController = async (req, res) => {
 }
 
 
-export const deleteOneController = async (req, res) => {
+export const deleteOneProductController = async (req, res) => {
 
   const { pid } = req.params;
 
@@ -149,7 +142,7 @@ export const deleteOneController = async (req, res) => {
   
         } else {
   
-          //REVISAR EL CODIGO DE ESTE ERROR SI ESTA CORRCETO--REVISADO LISTO
+          
   
           logger.info('ESTE PRODUCTO NO LO CREO EL USURIO, NO LO PUEDE ELIMINAR');
   

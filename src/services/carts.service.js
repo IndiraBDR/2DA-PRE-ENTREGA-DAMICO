@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 export const findAllCartServ = () => {
 
     const carts = cartManagerBD.findAll()
-
     return carts
 
 }
@@ -16,9 +15,7 @@ export const findAllCartServ = () => {
 export const findCartByIdServ = (idCart) => {
 
     const cart = cartManagerBD.findCartById(idCart);
-
     return cart
-
 
 }
 
@@ -26,9 +23,7 @@ export const findCartByIdServ = (idCart) => {
 export const createOneCartServ = () => {
 
     const createCart = cartManagerBD.createOneCart();
-
     return createCart
-
 
 }
 
@@ -37,9 +32,7 @@ export const addProductToCartServ = (idCart, idProduct) => {
 
 
     const updatedCart = cartManagerBD.addProductToCart(idCart, idProduct);
-
     return updatedCart
-
 
 }
 
@@ -47,16 +40,13 @@ export const addProductToCartServ = (idCart, idProduct) => {
 export const updateCartServ = (idCart, newProductBody) => {
 
     const updatedCart = cartManagerBD.updateCart(idCart, newProductBody);
-
     return updatedCart
-
 
 }
 
 export const addProductToCartQuantityServ = (idCart, idProduct, quantity) => {
 
     const updatedCart = cartManagerBD.addProductToCartQuantity(idCart, idProduct, quantity);
-
     return updatedCart;
 
 }
@@ -68,7 +58,6 @@ export const deleteCartByIdServ = (idCart) => {
 
     const updatedCart = cartManagerBD.deleteOne(idCart);
     return updatedCart
-
 
 }
 
@@ -145,8 +134,5 @@ export const purchase = async (idCart) => {
 
     return { unavailableProdutcs }
 
-
 }
 
-//653e8a45417a1d5ffca9aa1f
-//653e8a6c417a1d5ffca9aa21
