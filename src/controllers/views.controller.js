@@ -6,7 +6,6 @@ import { findByIdServ } from "../services/users.service.js";
 
 export const renderHomeController = async (req, res) => {
 
-    //let products = await productManagerDB.findAll(req.query)
 
     let products = await findAllServ(req.query)
 
@@ -30,7 +29,6 @@ export const renderChatController = async (req, res) => {
 
 export const renderProductsController = async (req, res) => {
 
-    //let products = await productManagerDB.findAll(req.query)
     let products = await findAllServ(req.query)
     let productsDB = products.payload
     const productsObject = productsDB.map(p => p.toObject());
@@ -50,8 +48,6 @@ export const renderProductsController = async (req, res) => {
 export const renderCartIdController = async (req, res) => {
 
     const { cartId } = req.params
-    //let cartById = await cartManagerBD.findCartById(cartId);
-
     let cartById = await findCartByIdServ(cartId)
     let cartArray = cartById.products;
 
@@ -69,7 +65,6 @@ export const renderUserSettingController = async (req, res) => {
 
     const { userId } = req.params
 
-    // const userById = await userManagerDB.findById(userId)
 
     const userById = await findByIdServ(userId)
 

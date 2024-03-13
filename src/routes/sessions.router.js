@@ -9,11 +9,6 @@ const routerSessions = Router();
 routerSessions.post("/signup", passport.authenticate("signup",{successRedirect: '/api/views/login',
 failureRedirect: '/api/views/error',failureMessage: true}
 
-//(req, res) => {
-
- //return res.redirect("/api/views/login")
-
-//})
 ))
 
 routerSessions.post("/login", passport.authenticate("login",{ failureMessage: true, failureRedirect: "/api/views/error", session: false }),generateTokenMiddleware, (req,res)=>{ return res.redirect("/api/views/products")

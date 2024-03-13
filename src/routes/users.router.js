@@ -9,7 +9,6 @@ const routerUsers = Router();
 routerUsers.get("/", tokenValidationMiddleware, findAllUserController);
 routerUsers.get("/:idCart", findUserByCartIdController);
 routerUsers.put("/premium/:idUser", updateUserController)
-///NUEVO FINAL
 routerUsers.post("/admin/updateUser/:userId", tokenValidationMiddleware, authMiddleware(["admin"]), updateUserAdminController)
 routerUsers.post("/admin/deleteUser/:userId", tokenValidationMiddleware, authMiddleware(["admin"]), deleteUserAdminController)
 routerUsers.delete("/deleteInactiveUsers", deleteInactiveUsersController)

@@ -216,7 +216,7 @@ export const purchaseCartController = async (req, res) => {
 
     const response = await purchase(idCart);
 
-    // res.json({ response })
+
 
     res.status(200).json({ response })
 

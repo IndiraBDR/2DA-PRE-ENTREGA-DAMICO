@@ -5,7 +5,6 @@ import passport from "passport";
 import { tokenValidationMiddleware } from "../middleware/jwt.middleware.js";
 const routerProduct = Router();
 
-//,authMiddleware(["user"])
 
 routerProduct.get("/", findAllProductsController);
 routerProduct.get("/:pid", findByIdProductController);

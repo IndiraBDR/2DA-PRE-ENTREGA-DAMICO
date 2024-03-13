@@ -10,7 +10,6 @@ routerCart.get("/", findAllCartController);
 routerCart.get("/:idCart", findCartByIdController);
 routerCart.post("/", createOneCartController);
 routerCart.post("/:idCart/products/:idProduct", tokenValidationMiddleware, addProductToCartController);
-
 routerCart.put("/:idCart/products/:idProduct", addProductToCartQuantityController);
 routerCart.delete("/:idCart", deleteTotalProductToCartController);
 routerCart.delete("/:idCart/products/:idProduct", deleteProductToCartController);
